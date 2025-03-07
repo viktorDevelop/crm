@@ -1,6 +1,7 @@
 <?php
 
 namespace crm\core;
+use crm\core\Database;
 
 class Model
 {
@@ -9,25 +10,53 @@ class Model
     protected $fields = [];
     public function __construct()
     {
-        $this->db = \core\Database::getInstance();
+        $this->db = Database::getInstance();
 
     }
 
-    public function __get(string $name)
-    {
+    protected static $field = [];
+    protected static $required = [];
+    protected static $arError = [];
+    private $data = [];
 
-        return $this->fields[$name];
+
+    private function __set(string $name, $value): void
+    {
+        $this->data[$name] = $value;
     }
 
-    public function __set(string $name, $value): void
+    private function __get(string $name)
     {
-        $this->fields[$name] = $value;
+        foreach (static::$field as $f=>$t)
+        {
+            $arF[] = $f;
+        }
+        if (in_array($name,$arF)){
+
+            $this->validateType($name);
+
+            return  $this->data[$name];
+        }
+        return false;
     }
 
-
-    public function getData()
+    private function validateType($field)
     {
-        return [];
+        $val = $this->data[$field];
+        $type =  static::$field[$field];
+        if (gettype($val) != $type){
+            self::$arError[$field] = 'not '.$type;
+            return false;
+        }
+
+    }
+
+    /**
+     * @return array
+     */
+    public static function getError(): array
+    {
+        return self::$arError;
     }
 
     public function getByAlias($alias = '')
