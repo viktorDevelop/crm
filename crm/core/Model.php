@@ -8,6 +8,9 @@ class Model
     protected static $table;
     protected $db;
     protected $fields = [];
+    public static int $limit = 10;
+    public static int $offset = 0;
+
     public function __construct()
     {
         $this->db = Database::getInstance();
@@ -40,15 +43,13 @@ class Model
         return false;
     }
 
-    private function validateType($field)
+    private function validateType($field):void
     {
         $val = $this->data[$field];
         $type =  static::$field[$field];
         if (gettype($val) != $type){
             self::$arError[$field] = 'not '.$type;
-            return false;
         }
-
     }
 
     /**
@@ -59,7 +60,7 @@ class Model
         return self::$arError;
     }
 
-    public function getByAlias($alias = '')
+    public function getByAlias($alias = ''):array
     {
         $res =  $this->db->query('SELECT * FROM '.static::$table.' WHERE alias = :alias')
             ->setValue('alias',$alias)->execute()->getOne(\PDO::FETCH_ASSOC);
@@ -73,7 +74,7 @@ class Model
 
     }
 
-    public function getByField($field,$val,$all = false)
+    public function getByField($field,$val,$all = false):array
     {
         if ($all)
         {
@@ -93,10 +94,13 @@ class Model
 
     }
 
-    public function getByList()
+    public function getByList():array
     {
-        $res =  $this->db->query('SELECT * FROM '.static::$table)
+        $res =  $this->db->query('SELECT * FROM '.static::$table. ' LIMIT :limit OFFSET :offset' )
+            ->setValue('limit',static::$limit,\PDO::PARAM_INT)
+            ->setValue('offset',static::$offset,\PDO::PARAM_INT)
             ->execute()->getAll(\PDO::FETCH_ASSOC);
         return $res;
+
     }
 }

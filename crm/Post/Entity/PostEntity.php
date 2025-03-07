@@ -11,6 +11,8 @@ use crm\core\Model;
 class PostEntity extends Model
 {
     protected static $table = 'posts';
+
+
      protected static $field = [
         'id'=>'integer',
         'title'=>'string',

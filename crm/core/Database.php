@@ -47,9 +47,9 @@ class Database
      * @param $val
      * @return Database
      */
-    public function setValue($column, $val)
+    public function setValue($column, $val,$param = 2 )
     {
-        $this->sth->bindValue(':'.$column,$val);
+        $this->sth->bindValue(':'.$column,$val,$param);
         return $this;
     }
 
