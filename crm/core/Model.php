@@ -103,4 +103,11 @@ class Model
         return $res;
 
     }
+
+    public function getCount()
+    {
+        $res = $this->db->query("SELECT COUNT(*) as count FROM ".static::$table)->execute()->getOne(\PDO::FETCH_ASSOC);
+
+        return $res;
+    }
 }

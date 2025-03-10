@@ -8,10 +8,9 @@ class PostRepository implements \crm\Irepository\IServise
 {
     private PostEntity $postEntity;
 
-    public function __construct(PostEntity $postEntity)
+    public function __construct()
     {
-
-        $this->postEntity = $postEntity;
+        $this->postEntity = new PostEntity();
     }
 
     public function find(string $field, $val): array
@@ -23,7 +22,10 @@ class PostRepository implements \crm\Irepository\IServise
     {
         Model::$limit = $limit;
         Model::$offset = $offset;
-        return $this->postEntity->getByList();
+        return [
+            'posts'=>$this->postEntity->getByList(),
+            'postCount'=>$this->postEntity->getCount()['count']
+        ];
     }
 
     public function delete(int $id): void
