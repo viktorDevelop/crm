@@ -1,6 +1,7 @@
 <?php
 namespace crm\controllers;
 
+use crm\core\Request;
 use crm\core\View;
 
 class PageController
@@ -11,5 +12,7 @@ class PageController
 
        return $view->render();
     }
+
+
 
 }
