@@ -11,7 +11,7 @@ use crm\controllers\ARestController;
 
 class CategoryController extends ARestController implements RestInterface
 {
-
+    // /category/ get all category
     public function actionIndex()
     {
         // TODO: Implement actionIndex() method.
@@ -36,4 +36,6 @@ class CategoryController extends ARestController implements RestInterface
     {
         // TODO: Implement actionDelete() method.
     }
+
+
 }

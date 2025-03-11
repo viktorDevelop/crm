@@ -29,6 +29,10 @@ class Router {
                     http_response_code(200);
                     $this->incController();
                 }
+                if (in_array('page',$this->current_rules['rest']))
+                {
+                    $this->incController(false);
+                }
             }
 
         }
@@ -47,12 +51,17 @@ class Router {
         }
     }
 
-    private function incController()
+    private function incController($json = true)
     {
         $controller = $this->current_rules['controller'];
         $controller_o = new $controller();
         $method = 'action' . ucfirst($this->current_rules['method']);
-        echo json_encode($controller_o->$method($this->request));
+
+        if ($json)
+            echo json_encode($controller_o->$method($this->request));
+        else
+            echo $controller_o->$method($this->request);
+
     }
     public function put()
     {}

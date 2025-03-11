@@ -1,8 +1,11 @@
 import Menu from './components/Menu.js'
+import postList from './components/postList.js'
 export default {
     data() {
        return {
-           project:[]
+           project:[],
+           detail:false,
+           list:true
        }
     },
 
@@ -14,31 +17,43 @@ export default {
     methods:{
         async getPostsFetch()
         {
-            let req = await fetch('/posts');
-            let res = await req.json()
-            if (res.result.success)
-                this.project =  res.result.items;
-            else
-                this.message = res.error;
+            let req = await fetch('http://localhost/posts/');
+            let res = await req.json();
+            this.project =  res.posts;
+            console.log(res.posts)
         }
     },
 
     computed:{
 
+        view(){
+
+        }
 
     },
 
     components: {
-        Menu
+        Menu,postList
     },
 
     template: `
-        <div class="container">
-        <Menu/>        
-                                           
-                <div class="col-md-12 d-flex ">                
-                     <div v-for="item in project " class="col-md-4">{{item.title}}</div>
-                </div>
+        <div class="container">                                                                     
+                  <table class="table">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>заголовок</th>
+                      <th>описание</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for = "item in project">
+                      <th scope="row">1</th>
+                      <td>{{item.title}}</td>
+                      <td>Otto</td>
+                    </tr>                     
+                  </tbody>
+                </table>
         </div>
     `
 }

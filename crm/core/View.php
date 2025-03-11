@@ -31,7 +31,7 @@ class View
      * @return false|string
      *
      */
-    public function render($view)
+    public function render($view ='')
     {
         foreach ($this->data as $key => $value) {
             $$key = $value;

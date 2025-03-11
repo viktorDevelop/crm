@@ -20,7 +20,8 @@ class PostController
     {
         $postService = new PostService(new PostRepository());
         $postService->setLimit(1);
-        $postService->setPage($request->get('page'));
+
+        $postService->setPage(intval($_GET['page']));
         $res = $postService->getPosts();
         return $res;
     }

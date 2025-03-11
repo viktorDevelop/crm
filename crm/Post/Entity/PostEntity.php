@@ -21,14 +21,16 @@ class PostEntity extends Model
         'category_id'=>'integer',
         'content'=>'string',
         'comment_id'=>'integer',
-        'user_id'=>'integer'
+        'user_id'=>'integer',
+        'public '=>'integer'
 
     ];
 
     protected static $required = [
             'id',
             'category_id',
-            'user_id'
+            'user_id',
+            'public'
     ];
 
 
