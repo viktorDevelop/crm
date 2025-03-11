@@ -4,17 +4,19 @@ return $routes = [
         [
             'condition'=>'#^/#',
             'rule'=>'section=10&post=20',
-            'controller'=>\crm\controllers\CategoryController::class,
+            'controller'=>\crm\controllers\PageController::class,
             'method'=>'index',
-            'rest'=>['get']
+            'rest'=>['page']
         ],
+
         [
-            'condition'=>'#^/posts/([a-z0-9-]+)/?([^\\/]+)/?$#',
-            'rule'=>'section_code=$1&page=$2',
+            'condition'=>'#^/posts/?([^\\/]+)/?$#',
+            'rule'=>'page=$2',
             'controller'=> \crm\controllers\PostController::class,
             'method'=>'posts',
             'rest'=>['get']
         ],
+
 
         [
             'condition'=>'#^/category/([a-z0-9-]+)/?([^\\/]+)/?$#',
