@@ -24,6 +24,11 @@ class UserEntity extends Model
 
     public function isAdmin()
     {
+        $sth = $this->db->query('SELECT * FROM '.self::$table.'WHERE login = :login AND password = :password' );
+        $sth->setValue('login','viktor');
+        $sth->setValue('password','123');
+        return $sth->getOne(\PDO::FETCH_ASSOC);
+
 
     }
 }
