@@ -21,7 +21,13 @@ export default {
             let res = await req.json();
             this.project =  res.posts;
             console.log(res.posts)
+        },
+
+        checkedPost(id)
+        {
+
         }
+
     },
 
     computed:{
@@ -37,7 +43,12 @@ export default {
     },
 
     template: `
-        <div class="container">                                                                     
+        <div class="container d-flex flex-wrap">   
+            <div class="col-md-4">
+                
+            </div>
+            <div class="col-md-8">
+            
                   <table class="table">
                   <thead class="thead-dark">
                     <tr>
@@ -47,13 +58,14 @@ export default {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for = "item in project">
-                      <th scope="row">1</th>
+                    <tr v-for = "item in project" :id="item.id">
+                      <th scope="row"> <input type="checkbox" @checked="" > </th>
                       <td>{{item.title}}</td>
                       <td>Otto</td>
                     </tr>                     
                   </tbody>
                 </table>
+            </div>                                                                  
         </div>
     `
 }

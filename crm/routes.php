@@ -9,6 +9,7 @@ return $routes = [
             'rest'=>['page']
         ],
 
+
         [
             'condition'=>'#^/posts/?([^\\/]+)/?$#',
             'rule'=>'page=$2',
@@ -17,8 +18,17 @@ return $routes = [
             'rest'=>['get']
         ],
 
-
         [
+            'condition'=>'#^/posts/?$#',
+            'rule'=>'page=$2',
+            'controller'=> \crm\controllers\PostController::class,
+            'method'=>'posts',
+            'rest'=>['get']
+        ],
+
+
+
+    [
             'condition'=>'#^/category/([a-z0-9-]+)/?([^\\/]+)/?$#',
             'rule'=>'section_code=$1&page=$2',
             'controller'=> \crm\controllers\CategoryController::class,
