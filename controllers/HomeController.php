@@ -13,7 +13,7 @@ class HomeController implements PageInterface
 //        var_dump($request->get('sort'));
         $tmp = new Template('blog');
         $tmp->setTitle('ttt');
-        $tmp->setContent('category.list');
+        $tmp->setContent('category.list',['data'=>['title'=>3333]]);
         $tmp->show();
     }
 
@@ -21,7 +21,7 @@ class HomeController implements PageInterface
     {
         $tmp = new Template('blog');
         $tmp->setTitle('ttt');
-        $tmp->setContent('category.list',["$arResult"=>$request->get()]);
+        $tmp->setContent('category.list');
         $tmp->show();
     }
 }

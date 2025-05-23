@@ -7,6 +7,11 @@ class Application
     protected $routes = [
 
         [
+            'condition'=>'#^/$#',
+            'rule'=>'controller=Home&action=main&section=$1'
+        ],
+
+        [
             'condition'=>'#^/([a-z]+)/?$#',
             'rule'=>'controller=Home&action=main&section=$1'
         ],
@@ -77,7 +82,7 @@ class Application
     protected function checkMethod($controller,$params = [])
     {
         $method = $_SERVER['REQUEST_METHOD'];
-       echo $obj_name =   '\\controllers\\'.ucfirst($controller).'Controller';
+        $obj_name =   '\\controllers\\'.ucfirst($controller).'Controller';
         switch ($method){
             case 'GET':
 

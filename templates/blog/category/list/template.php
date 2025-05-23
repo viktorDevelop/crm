@@ -1,7 +1,7 @@
 <!--category list-->
 
 <?php
-//var_dump($arResult);
+//var_dump($data);
 ?>
 
 <div id="categorylist"></div>
