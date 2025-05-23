@@ -12,6 +12,7 @@ class PostEntity extends Model
 {
     protected static $table = 'posts';
 
+    protected static $table_category;
 
      protected static $field = [
         'id'=>'integer',
@@ -32,7 +33,5 @@ class PostEntity extends Model
             'user_id',
             'public'
     ];
-
-
 
 }

@@ -1,21 +1,35 @@
 <?php
+/**
+ * класс для работы с постами
+ */
 namespace crm\controllers;
 
 use crm\core\Request;
 use crm\Post\PostRepository;
 use crm\Post\PostService;
 
+
 class PostController
 {
+    /**
+     * выводит все посты
+     * @param Request $request
+     * @return array
+     */
     public function actionIndex(Request $request)
     {
-        $postService = new PostService(new PostRepository());
-        $postService->setCategoryPost($request->get('section'));
-        $res = $postService->getPosts();
-        return $res;
+//        $postService = new PostService(new PostRepository());
+//        $postService->setCategoryPost($request->get('section'));
+//        $res = $postService->getPosts();
+//        $res['req'] = $request->get();
+        return $request->get();
     }
 
-    //category/bitrix/php-article
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function actionPosts(Request $request)
     {
         $postService = new PostService(new PostRepository());
