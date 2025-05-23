@@ -1,5 +1,5 @@
 <?php
-namespace crm\core;
+namespace core;
 use \ReflectionClass;
 class SimpleORM
 {

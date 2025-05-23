@@ -5,4 +5,4 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 //include $_SERVER['DOCUMENT_ROOT'].'/templates/template.php';
 //(new \crm\core\Router($routes));
 
-//Application::run();
+\core\Application::run();

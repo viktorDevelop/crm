@@ -7,7 +7,7 @@ export default {
     methods:{
        async getCategory()
       {
-        const res = await fetch('/category/');
+        const res = await fetch('/api/users/?page=1');
         this.category =  res.json();
 
       }

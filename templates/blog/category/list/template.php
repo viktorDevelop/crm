@@ -1,7 +1,7 @@
 <!--category list-->
 
 <?php
-//echo $gallery;
+//var_dump($arResult);
 ?>
 
 <div id="categorylist"></div>
