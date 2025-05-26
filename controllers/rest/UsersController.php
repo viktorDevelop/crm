@@ -1,5 +1,5 @@
 <?php
-namespace controllers;
+namespace controllers\rest;
 
 use core\Request;
 use core\interfaces\RestInterface;

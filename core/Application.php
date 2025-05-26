@@ -82,7 +82,7 @@ class Application
     protected function checkMethod($controller,$params = [])
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $obj_name =   '\\controllers\\'.ucfirst($controller).'Controller';
+        $obj_name =   '\\controllers\\rest\\'.ucfirst($controller).'Controller';
         switch ($method){
             case 'GET':
 

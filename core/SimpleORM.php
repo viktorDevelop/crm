@@ -7,10 +7,17 @@ class SimpleORM
     private string $table;
     private ReflectionClass $reflection;
     private array $mapping = [];
+    private mixed $arResult;
 
-    public function __construct(\PDO $pdo, string $modelClass)
+    public function __construct(string $modelClass)
     {
-        $this->pdo = $pdo;
+        $arConfig = [];
+        $arConfig['host'] = 'db';
+        $arConfig['user'] = 'bitrix';
+        $arConfig['db_name'] = 'bitrix';
+        $arConfig['password'] = '123';
+        $this->pdo = new \PDO('mysql:dbname='.$arConfig['db_name'].';host='.$arConfig['host'],$arConfig['user'],$arConfig['password']);
+
         $this->reflection = new \ReflectionClass($modelClass);
 
         // Автоматическое определение имени таблицы
@@ -178,7 +185,7 @@ class SimpleORM
         if (!$data) {
             return null;
         }
-
+        $this->arResult = $data;
         return $this->hydrate($data);
     }
 
@@ -193,11 +200,18 @@ class SimpleORM
 
         $results = [];
         while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $this->arResult[] = $data;
             $results[] = $this->hydrate($data);
         }
 
         return $results;
     }
+
+    public function toArray()
+    {
+        return $this->arResult;
+    }
+
 
     /**
      * Удаляет объект из базы данных
