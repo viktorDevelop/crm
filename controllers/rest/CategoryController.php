@@ -6,67 +6,65 @@ use core\interfaces\RestInterface;
 use core\Responce;
 use core\SimpleORM;
 use models\Category;
+use services\category\CategoryRepository;
+use services\category\CategoryService;
 
 class CategoryController implements RestInterface
 {
-
-
     public function actionIndex(\core\Request|\core\interfaces\Request $request)
     {
-        $arResult = [];
-        $model = new SimpleORM('models\Category');
-        $limit = 100;
-        $offset = 0;
-        $page = $request->get('page');
-        if ($page){
-            $limit = 2;
-            $count = $this->getCount();
-            $offset = ($page - 1) * $limit;
-        }
-        $res = (array) $model->findAll($limit,$offset);
-        $arResult = ($res) ?: $model->toArray();
-        return Responce::send($arResult);
+        $categoryRepository = new CategoryRepository();
+        $service = new CategoryService($categoryRepository);
+        $service->setPage(intval($request->get('page')));
+        $service->setLimit(intval($request->get('limit')));
+        $service->setOffset(intval($request->get('offset')));
+
+        $result = $service->getList();
+        $reponse['status'] = true;
+        $reponse['page'] = $request->get('page');
+        $reponse['count'] = count($result);
+        $reponse['data'] = $result;
+        return Responce::send($reponse);
     }
 
-    public function getCount()
-    {
-        $model = new SimpleORM('models\Category');
-        $model->findAll();
-        return count($model->toArray());
-    }
-
+    /**
+     * @param \core\Request|Request $request
+     * @return false|string
+     */
     public function actionFind(\core\Request|\core\interfaces\Request $request)
     {
         $model = new SimpleORM('models\Category');
-        $res = (array) $model->find($request->data('id'));
-        $result = $model->toArray();
-        return Responce::send($result);
+        $category = new Category(
+            $request->data('title'),
+            $request->data('alias')
+        );
+        $data = [];
+        return Responce::send([
+            'status'=>true,
+            'data'=> $data
+        ]);
     }
 
     public function actionSave(\core\Request|\core\interfaces\Request $request)
     {
-        $model = new SimpleORM('models\Category');
-
-        if ($request->data('id'))
+        $categoryRepository = new CategoryRepository();
+        $service = new CategoryService($categoryRepository);
+        if ($request->getMethod() == 'POST')
         {
-            echo $request->data('id');
-            $model->find($request->data('id'));
-            $category = new Category();
-            $category->setTitle($request->data('title'));
-            $category->setAlias($request->data('alias'));
-        }else{
-             $category = new Category(
-                $request->data('title'),
-                $request->data('alias')
-            );
+           $responseData = $service->add($request);
         }
-       $res =  $model->save($category);
-        return Responce::send($res);
-
+        if ($request->getMethod()=="PATCH")
+        {
+            $responseData =  $service->update($request);
+        }
+        return $responseData;
     }
 
     public function actionDelete(\core\Request|\core\interfaces\Request $request)
     {
-        // TODO: Implement actionDelete() method.
+        $categoryRepository = new CategoryRepository();
+        $service = new CategoryService($categoryRepository);
+        return $service->delete($request);
     }
+
 }

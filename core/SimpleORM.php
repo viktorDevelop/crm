@@ -7,7 +7,8 @@ class SimpleORM
     private string $table;
     private ReflectionClass $reflection;
     private array $mapping = [];
-    private mixed $arResult;
+    private array $arResult = [];
+    private int $lastInsertId;
 
     public function __construct(string $modelClass)
     {
@@ -133,11 +134,17 @@ class SimpleORM
         if ($stmt->execute($values)) {
             // Устанавливаем ID для нового объекта
             $id = $this->pdo->lastInsertId();
+            $this->lastInsertId = $id;
             $this->setPropertyValue($entity, 'id', $id);
             return true;
         }
 
         return false;
+    }
+
+    public function getLastInsertId()
+    {
+        return $this->lastInsertId;
     }
 
     /**
@@ -200,7 +207,8 @@ class SimpleORM
 
         $results = [];
         while ($data = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $this->arResult[] = $data;
+            if ($data)
+                $this->arResult[] = $data;
             $results[] = $this->hydrate($data);
         }
 

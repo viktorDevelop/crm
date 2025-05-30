@@ -1,7 +1,11 @@
 <?php
-namespace models;
+namespace services\category;
 
 use core\SimpleORM;
+
+/**
+ * Доменный слой (Domain Layer)
+ */
 
 class Category extends SimpleORM
 {
@@ -10,8 +14,7 @@ class Category extends SimpleORM
     private string $alias;
 
 
-
-    public function __construct($title ='',$alias ='')
+    public function __construct($title = '', $alias = '')
     {
         $this->title = $title;
         $this->alias = $alias;

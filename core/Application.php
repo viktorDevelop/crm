@@ -95,26 +95,10 @@ class Application
                 }else{
                     echo 404;
                 }
-
-                break;
-
-            case 'POST':
-
-                if (class_exists($obj_name))
-                {
-
-                    $obj_name = new $obj_name();
-                    $action = 'actionFind';
-                    $request = new Request();
-                    echo $obj_name->$action($request);
-                }else{
-                    echo 404;
-                }
-
-                break;
-
+            break;
             case 'PATCH':
             case 'PUT':
+            case 'POST':
 
                 if (class_exists($obj_name))
                 {
