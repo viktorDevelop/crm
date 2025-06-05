@@ -7,13 +7,16 @@ use core\Template;
 
 class HomeController implements PageInterface
 {
+    public function __construct($params = [])
+    {
+
+    }
 
     public function actionMain(Request $request)
     {
-//        var_dump($request->get('sort'));
         $tmp = new Template('blog');
         $tmp->setTitle('ttt');
-        $tmp->setContent('category.list',['data'=>['title'=>3333]]);
+        $tmp->setContent('category.list');
         $tmp->show();
     }
 
@@ -22,6 +25,14 @@ class HomeController implements PageInterface
         $tmp = new Template('blog');
         $tmp->setTitle('ttt');
         $tmp->setContent('category.list');
+        $tmp->show();
+    }
+
+    public function actionPostDetail(Request $request)
+    {
+        $tmp = new Template('blog');
+        $tmp->setTitle('php');
+        $tmp->setContent('posts.list');
         $tmp->show();
     }
 }

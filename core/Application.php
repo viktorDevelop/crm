@@ -13,7 +13,7 @@ class Application
 
         [
             'condition'=>'#^/([a-z]+)/?$#',
-            'rule'=>'controller=Home&action=main&section=$1'
+            'rule'=>'controller=Home&action=sectionList&section=$1'
         ],
 
         [
@@ -23,17 +23,13 @@ class Application
 
         [
             'condition'=>'#^/([a-z]+)/([a-z0-9]+)/?$#',
-            'rule'=>'controller=Home&action=sectionList&section=$1&postCode=$2'
+            'rule'=>'controller=Home&action=PostDetail&section=$1&postCode=$2'
         ],
-
-
 
         [
             'condition'=>'#^/([a-z]+)/([a-z]+)/?$#',
             'rule'=>'controller=Home&action=section&section=$1&postCode=$2'
         ],
-
-
 
         [
             'condition'=>'#^/api/([a-z]+)/([^\\/]+)/?$#',
@@ -61,15 +57,16 @@ class Application
             }
         }
         $getParams = parse_str($rule,$resArrGetParams);
+
         if (isset($current_rules['isRest']))
         {
             $app->checkMethod($resArrGetParams['controller'],$resArrGetParams);
         }else{
-            $controller = '\\controllers\\'.$resArrGetParams['controller'].'Controller';
-            $action = 'action'.$resArrGetParams['action'];
+              $controller = '\\controllers\\'.$resArrGetParams['controller'].'Controller';
+              $action = 'action'.$resArrGetParams['action'];
             if (class_exists($controller))
             {
-                $oController = new $controller();
+                $oController = new $controller($resArrGetParams);
                 $request = new Request();
                 $oController->$action($request);
             }else{

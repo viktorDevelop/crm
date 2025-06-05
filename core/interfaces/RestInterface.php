@@ -5,8 +5,8 @@ use core\Request;
 
 interface RestInterface
 {
-    public function actionIndex(Request|\core\interfaces\Request $request);
-    public function actionFind(Request|\core\interfaces\Request $request);
-    public function actionSave(Request|\core\interfaces\Request $request);
-    public function actionDelete(Request|\core\interfaces\Request $request);
+    public function actionIndex(Request $request);
+    public function actionFind(Request $request);
+    public function actionSave(Request $request);
+    public function actionDelete(Request $request);
 }

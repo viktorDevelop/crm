@@ -6,7 +6,7 @@ class Request
     public function get($name = '')
     {
         if ($name)
-            return $_GET[$name];
+            return isset($_GET[$name]) ?? $_GET[$name];
         return $_GET;
     }
 
