@@ -1,6 +1,7 @@
 <?php
 namespace core;
 use \ReflectionClass;
+use \PDO;
 class SimpleORM
 {
     private \PDO $pdo;
@@ -9,6 +10,7 @@ class SimpleORM
     private array $mapping = [];
     private array $arResult = [];
     private int $lastInsertId;
+    protected $relation;
 
     public function __construct(string $modelClass)
     {
@@ -26,6 +28,46 @@ class SimpleORM
 
         // Создание маппинга свойств класса на колонки таблицы
         $this->mapping = $this->createPropertyMapping();
+        $this->relation = $this->detectedRelation();
+
+//        echo "<pre>"; print_r($this->relation);
+    }
+
+    private function detectedRelation()
+    {
+        $relations = [];
+        $docComment = $this->reflection->getDocComment();
+
+        if (!$docComment) {
+            return $relations;
+        }
+
+        // Поиск аннотаций @OneToMany, @ManyToOne, @ManyToMany
+        if (preg_match_all('/@(OneToMany|ManyToOne|ManyToMany)\s+([^\s]+)\s*(.*)/', $docComment, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $match) {
+                $relationType = $match[1];
+                $targetClass = $match[2];
+
+                $options = $this->parseRelationOptions($match[3] ?? '');
+
+                $relations[] = [
+                    'type' => $relationType,
+                    'target' => $targetClass,
+                    'options' => $options
+                ];
+            }
+        }
+
+        return $relations;
+    }
+
+    private function parseRelationOptions($field)
+    {
+        if (preg_match('/field=([a-z-_]+)/', $field, $mappedMatch)) {
+            $options['field'] = $mappedMatch[1];
+        }
+
+        return $options;
     }
 
     /**
@@ -192,9 +234,88 @@ class SimpleORM
         if (!$data) {
             return null;
         }
+
+
         $this->arResult = $data;
-        return $this->hydrate($data);
+        $res = $this->hydrate($data);
+
+        foreach ($this->relation as $k=>$rel)
+        {
+            $orm = new self($rel['target']);
+
+            $method =  $rel['type'];
+            $orm->$method($orm, $rel['target'],$rel['options']['field'],$id,$res);
+        }
+//        echo "<pre>";
+//        print_r($this->relation);
+        return  $res;
     }
+
+    public function OneToMany( SimpleORM $orm, $propsName,$foreinKey,$val,$res)
+    {
+        $cond[$foreinKey] = $val;
+      $data =  $orm->findAllBy($cond);
+      $res->posts = $data;
+
+      $this->arResult = $data;
+
+    }
+
+    /**
+     * Находит все сущности по критериям
+     */
+    public function findAllBy(array $criteria = []): array
+    {
+        $where = [];
+        $params = [];
+        foreach ($criteria as $field => $value) {
+            $where[] = "{$field} = ?";
+            $params[] = $value;
+        }
+        $whereClause = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+        $sql = "SELECT * FROM {$this->table} {$whereClause}";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $results = [];
+        while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $entity = $this->hydrate($data);
+            $results[] = $entity;
+        }
+
+        return $results;
+    }
+
+    /**
+     * Находит сущности по критериям
+     */
+    public function findBy(array $criteria): ?object
+    {
+        $where = [];
+        $params = [];
+
+        foreach ($criteria as $field => $value) {
+            $where[] = "{$field} = ?";
+            $params[] = $value;
+        }
+
+        $whereClause = implode(' AND ', $where);
+        $sql = "SELECT * FROM {$this->table} WHERE {$whereClause} LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$data) {
+            return null;
+        }
+
+        $entity = $this->hydrate($data);
+        $this->loadRelations($entity);
+
+        return $entity;
+    }
+
 
     /**
      * Находит все объекты
@@ -290,4 +411,6 @@ class SimpleORM
 
         $reflectionProperty->setValue($entity, $value);
     }
+
+
 }
