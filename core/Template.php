@@ -41,6 +41,12 @@ class Template
         $this->tmp = str_replace('#content#',$vc, $this->tmp);
     }
 
+    public function setViewLayout($view,$data = [])
+    {
+        $vc = $this->render($view,$data);
+        $this->tmp = str_replace('#'.$view.'#',$vc, $this->tmp);
+    }
+
     public function show()
     {
         echo $this->tmp;
