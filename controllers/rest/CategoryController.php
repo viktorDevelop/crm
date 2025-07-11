@@ -20,7 +20,7 @@ class CategoryController implements RestInterface
 
         $result = $service->getList();
         $reponse['status'] = true;
-        $reponse['page'] = $request->get('page');
+        $reponse['result'] = $request->get('page');
         $reponse['count'] = count($result);
         $reponse['data'] = $result;
         return Responce::send($reponse);

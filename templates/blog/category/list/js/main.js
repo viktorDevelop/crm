@@ -15,7 +15,9 @@ export default {
     mounted()
     {
         this.getCategory();
-        console.log(this.category)
+        let settings = document.getElementById('categorylist');
+
+        console.log(settings.getAttribute('data-settings'))
     },
     template:`
          <div>

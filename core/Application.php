@@ -38,6 +38,12 @@ class Application
         ],
 
         [
+            'condition'=>'#^/admin/category/([^\\/]+)/?$#',
+            'rule'=>'controller=Admin&action=$1',
+
+        ],
+
+        [
             'condition'=>'#^/api/([a-z]+)/?$#',
             'rule'=>'controller=$1',
             'isRest'=>'y'

@@ -14,13 +14,13 @@ class SimpleORM
 
     public function __construct(string $modelClass)
     {
-        $arConfig = [];
-        $arConfig['host'] = 'db';
-        $arConfig['user'] = 'bitrix';
-        $arConfig['db_name'] = 'bitrix';
-        $arConfig['password'] = '123';
-        $this->pdo = new \PDO('mysql:dbname='.$arConfig['db_name'].';host='.$arConfig['host'],$arConfig['user'],$arConfig['password']);
-
+//        $arConfig = [];
+//        $arConfig['host'] = 'db';
+//        $arConfig['user'] = 'bitrix';
+//        $arConfig['db_name'] = 'bitrix';
+//        $arConfig['password'] = '123';
+//        $this->pdo = new \PDO('mysql:dbname='.$arConfig['db_name'].';host='.$arConfig['host'],$arConfig['user'],$arConfig['password']);
+        $this->pdo = Database::getInstance()->getConnect();
         $this->reflection = new \ReflectionClass($modelClass);
 
         // Автоматическое определение имени таблицы
@@ -246,9 +246,13 @@ class SimpleORM
             $method =  $rel['type'];
             $orm->$method($orm, $rel['target'],$rel['options']['field'],$id,$res);
         }
-//        echo "<pre>";
-//        print_r($this->relation);
+
         return  $res;
+    }
+
+    private function ManyToOne( SimpleORM $orm, $propsName,$foreinKey,$val,$res): void
+    {
+
     }
 
     public function OneToMany( SimpleORM $orm, $propsName,$foreinKey,$val,$res)
@@ -278,6 +282,7 @@ class SimpleORM
         $stmt->execute($params);
         $results = [];
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $this->arResult[] = $data;
             $entity = $this->hydrate($data);
             $results[] = $entity;
         }
@@ -311,7 +316,7 @@ class SimpleORM
         }
 
         $entity = $this->hydrate($data);
-        $this->loadRelations($entity);
+//        $this->loadRelations($entity);
 
         return $entity;
     }

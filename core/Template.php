@@ -37,6 +37,7 @@ class Template
 
     public function setContent($view,$data = [])
     {
+
         $vc = $this->render($view,$data);
         $this->tmp = str_replace('#content#',$vc, $this->tmp);
     }
