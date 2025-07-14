@@ -1,7 +1,9 @@
 export default {
     data(){
         return {
-            category:[]
+            category:[],
+            urls:{},
+            view:''
         }
     },
     methods:{
@@ -16,8 +18,12 @@ export default {
     {
         this.getCategory();
         let settings = document.getElementById('categorylist');
+        let aSetting = settings.getAttribute('data-settings');
+        let oSetting = JSON.parse(aSetting);
 
-        console.log(settings.getAttribute('data-settings'))
+        this.urls = oSetting.route
+        this.view = oSetting.view
+        console.log(oSetting.route)
     },
     template:`
          <div>
@@ -27,7 +33,7 @@ export default {
                 <div>name</div>
                 <div>preview</div>
                 <div>images</div>
-                 
+                  {{view}}
             </div>
         </div>
     `

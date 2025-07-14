@@ -3,12 +3,21 @@ namespace core;
 
 class Request
 {
+    private array $params;
+
+    public function __construct($params = [])
+    {
+        $this->params = $params;
+    }
+
     public function get($name = '')
     {
         if ($name)
             return isset($_GET[$name]) ?? $_GET[$name];
         return $_GET;
     }
+
+
 
     public function data($name = '')
     {
@@ -26,5 +35,13 @@ class Request
     public function getMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
     }
 }

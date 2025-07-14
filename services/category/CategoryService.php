@@ -30,7 +30,7 @@ class CategoryService
             $arResult = $this->categoryRepository->getAll($this->limit,intval($offset));
         }else{
             echo $this->offset;
-            $arResult =  $this->categoryRepository->getAll($this->limit,2);
+            $arResult =  $this->categoryRepository->getAll($this->limit,$this->offset);
         }
 
         return $arResult;

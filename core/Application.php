@@ -2,6 +2,7 @@
 namespace core;
 use core\Request;
 
+
 class Application
 {
     protected $routes = [
@@ -13,47 +14,40 @@ class Application
 
         [
             'condition'=>'#^/([a-z]+)/?$#',
-            'rule'=>'controller=Home&action=sectionList&section=$1'
+            'rule'=>'controller=$1&action=main'
         ],
 
         [
-            'condition'=>'#^/([a-z]+)/?([^\\/]+)?$#',
-            'rule'=>'controller=Home&action=main&section=$1'
+            'condition'=>'#^/([a-z]+)/([a-z]+)(?:/?([a-z0-9-]+)?/?(\?.*)?$|$)#',
+            'rule'=>'controller=$1&action=page&section=$2&slug2=$3'
         ],
 
-        [
-            'condition'=>'#^/([a-z]+)/([a-z0-9]+)/?$#',
-            'rule'=>'controller=Home&action=PostDetail&section=$1&postCode=$2'
-        ],
-
-        [
-            'condition'=>'#^/([a-z]+)/([a-z]+)/?$#',
-            'rule'=>'controller=Home&action=section&section=$1&postCode=$2'
-        ],
+//        [
+//            'condition'=>'#^/admin/$#',
+//            'rule'=>'controller=Admin&action=main&section=$1'
+//        ],
+//
+//        [
+//            'condition'=>'#^/admin/([a-z]+)/?$#',
+//            'rule'=>'controller=$1&action=main'
+//        ],
+//
+//        [
+//            'condition'=>'#^/admin/([a-z]+)/([a-z]+)(?:/?([a-z0-9-]+)?/?(\?.*)?$|$)#',
+//            'rule'=>'controller=$1&action=page&section=$2&slug2=$3'
+//        ],
 
         [
             'condition'=>'#^/api/([a-z]+)/([^\\/]+)/?$#',
             'rule'=>'controller=$1',
             'isRest'=>'y'
-        ],
-
-        [
-            'condition'=>'#^/admin/category/([^\\/]+)/?$#',
-            'rule'=>'controller=Admin&action=$1',
-
-        ],
-
-        [
-            'condition'=>'#^/api/([a-z]+)/?$#',
-            'rule'=>'controller=$1',
-            'isRest'=>'y'
-        ],
-
+        ]
     ];
     public static function run()
     {
         $app = new self();
         $uri = $_SERVER['REQUEST_URI'];
+
         foreach ($app->routes as $k => $items)
         {
             if (preg_match($items['condition'],$uri))
@@ -62,14 +56,16 @@ class Application
                 $current_rules = $items;
             }
         }
+//        print_r($rule);
         $getParams = parse_str($rule,$resArrGetParams);
 
         if (isset($current_rules['isRest']))
         {
             $app->checkMethod($resArrGetParams['controller'],$resArrGetParams);
         }else{
-              $controller = '\\controllers\\'.$resArrGetParams['controller'].'Controller';
+              $controller = '\\controllers\\'.ucfirst($resArrGetParams['controller']).'Controller';
               $action = 'action'.$resArrGetParams['action'];
+
             if (class_exists($controller))
             {
                 $oController = new $controller($resArrGetParams);
@@ -81,6 +77,12 @@ class Application
 
         }
     }
+
+    private function dump($ar = [])
+    {
+        echo '<pre>';  print_r($ar);
+    }
+
 
     protected function checkMethod($controller,$params = [])
     {
