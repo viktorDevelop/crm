@@ -2,6 +2,7 @@
 namespace services\Page;
 
 use core\CollectionList;
+use core\Request;
 use core\Template;
 use core\View;
 use services\models\Components;
@@ -13,13 +14,9 @@ class PageService
     protected array $pageSettings = [];
     protected ?string $page = '404';
 
-    public function execute()
+    public function execute($request)
     {
 //        echo '<pre>'; print_r($this->pageSettings);
-        if ($this->pageSettings['isRest'])
-        {
-
-        }
 
         if (!$this->pageSettings['isRest'])
         {
@@ -37,10 +34,20 @@ class PageService
 
                 $oContent = new $content();
                 $params = $this->pageSettings['components_page'][0]['params'];
-                $tmp->setPage(($oContent)->execute($params));
+                $tmp->setPage(($oContent)->execute($params,$request));
             }
 
             $tmp->show();
+        }
+    }
+
+    public function ApiExecute(?array $params,Request $request)
+    {
+        $controller = $params['handle'] ?? null;
+        if ($controller)
+        {
+            $sController = '\\services\\'.ucfirst($controller).'\\'.ucfirst($controller).'Controller';
+            $oController = new $sController($request);
         }
     }
 

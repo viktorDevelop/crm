@@ -24,10 +24,18 @@ class Application
         }
 
         parse_str($urlParse,$arParams);
-
+//        print_r($current_rule);
         $request = new Request($arParams);
-        $oPageService->getPageSettings($current_rule,$arParams['page']?? null);
-        $oPageService->execute();
+        if ($current_rule['rest'])
+        {
+            $oPageService->ApiExecute($arParams,$request);
+        }
+
+        if (!$current_rule['rest'])
+        {
+            $oPageService->getPageSettings($current_rule);
+            $oPageService->execute($request);
+        }
     }
 
 }
