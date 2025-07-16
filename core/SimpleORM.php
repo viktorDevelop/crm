@@ -140,7 +140,8 @@ class SimpleORM
         $values = [];
 
         // Определяем первичный ключ и его значение
-
+        echo '<pre>';
+        print_r($this->mapping );
         foreach ($this->mapping as $property => $config) {
             if ($config['primary']) {
                 $primaryKey = $config['column'];

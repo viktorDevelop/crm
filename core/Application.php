@@ -9,39 +9,24 @@ class Application
 
         [
             'condition'=>'#^/$#',
-            'rule'=>'controller=Home&action=main&section=$1'
+            'rule'=>'controller=Page&action=execute&component=Home,reviews,gallery'
         ],
+
 
         [
             'condition'=>'#^/([a-z]+)/?$#',
-            'rule'=>'controller=$1&action=main'
+            'rule'=>'controller=Page&action=execute&component=$1'
         ],
 
         [
             'condition'=>'#^/([a-z]+)/([a-z]+)(?:/?([a-z0-9-]+)?/?(\?.*)?$|$)#',
             'rule'=>'controller=$1&action=page&section=$2&slug2=$3'
         ],
-
-//        [
-//            'condition'=>'#^/admin/$#',
-//            'rule'=>'controller=Admin&action=main&section=$1'
-//        ],
-//
-//        [
-//            'condition'=>'#^/admin/([a-z]+)/?$#',
-//            'rule'=>'controller=$1&action=main'
-//        ],
-//
-//        [
-//            'condition'=>'#^/admin/([a-z]+)/([a-z]+)(?:/?([a-z0-9-]+)?/?(\?.*)?$|$)#',
-//            'rule'=>'controller=$1&action=page&section=$2&slug2=$3'
-//        ],
-
         [
-            'condition'=>'#^/api/([a-z]+)/([^\\/]+)/?$#',
-            'rule'=>'controller=$1',
-            'isRest'=>'y'
-        ]
+            'condition'=>'#^/admin/?$#',
+            'rule'=>'controller=Admin&action=execute&component=catalog,reviews,gallery'
+        ],
+
     ];
     public static function run()
     {
@@ -88,49 +73,10 @@ class Application
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $obj_name =   '\\controllers\\rest\\'.ucfirst($controller).'Controller';
-        switch ($method){
-            case 'GET':
 
-                if (class_exists($obj_name))
-                {
-                    $obj_name = new $obj_name();
-                    $action = 'actionIndex';
-                    $request = new Request();
-                    echo $obj_name->$action($request);
-                }else{
-                    echo 404;
-                }
-            break;
-            case 'PATCH':
-            case 'PUT':
-            case 'POST':
+        $handler = \core\helpers\HandlerFactory\HandlerFactory::create($method,$obj_name);
+        echo  $handler->handle();
 
-                if (class_exists($obj_name))
-                {
-                    $obj_name = new $obj_name();
-                    $action = 'actionSave';
-                    $request = new Request();
-                    echo  $obj_name->$action($request);
-
-                }else{
-                    echo 404;
-                }
-                break;
-            case 'DELETE':
-
-                if (class_exists($obj_name)){
-                    $obj_name = new $obj_name();
-                    $action = 'actionDelete';
-                    $request = new Request();
-                    echo $obj_name->$action($request);
-                }else{
-                    echo 404;
-                }
-                break;
-
-            default:
-                throw new \Exception('Unexpected value');
-        }
     }
 
 }

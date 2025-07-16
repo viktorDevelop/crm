@@ -20,7 +20,14 @@ class AdminController implements PageInterface
         $tmp->show();
     }
 
+    public function actionExecute()
+    {
 
+        $tmp = new Template('admin');
+        $tmp->setTitle('admin category list');
+        $tmp->setContent('pages');
+        $tmp->show();
+    }
     public function actionMain(Request $request)
     {
         // TODO: Implement actionMain() method.
