@@ -7,123 +7,75 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 
 //\core\Application::run();
 
-// get user/
-// get user/{id}
-// get user/{id}/posts
-// POST user/
-// PUT user
-// DELETE user/{id}
 
-// get posts/
-// get posts/{id}
-// get posts/{id}/comment
-// POST posts/
-// PUT posts
-// DELETE posts/{id}
+//$blade = new \core\SimpleBlade( '/views',  '/cache');
+//
+//echo $blade->render('pages/home', [
+//    'title' => 'Home Page',
+//    'name' => 'John Doe',
+//    'isAdmin' => true,
+//    'items' => ['Apple', 'Banana', 'Orange']
+//]);
 
-class Pages
+
+class View
 {
-    public ?int $id = null;
-    public string $title;
-    public string $preview;
-    public string $keyword;
-    public string $description;
+    private $data = [];
+    private static $instance;
 
-    /**
-     * @return string
-     */
-    public function getPreview(): string
+    private function __construct() {}
+
+    public static function getInstance()
     {
-        return $this->preview;
+        if (!isset(self::$instance)) {
+            $cl = __CLASS__;
+            self::$instance = new $cl;
+        }
+        return self::$instance;
+    }
+
+    public function __set($k,$v)
+    {
+        $this->data[$k] = $v;
     }
 
     /**
-     * @param string $preview
+     * @param $view
+     *
+     * @return false|string
+     *
      */
-    public function setPreview(string $preview): void
+    public function render($view ='')
     {
-        $this->preview = $preview;
+//        foreach ($this->data as $key => $value) {
+//            $$key = $value;
+//        }
+        extract($this->data, EXTR_SKIP);
+        ob_start();
+        $path = $_SERVER['DOCUMENT_ROOT'].'/views/'.$view.'.php';
+
+        if (file_exists($path)) {
+            include $path;
+        }else{
+            echo "404";
+        }
+
+        $content = ob_get_contents();
+        ob_clean();
+
+        $content = preg_replace(
+            '/@section\(\'(.+?)\'\)/',
+            '<?php $this->include("$1"); ?>',$content);
+        return $content;
     }
 
-    /**
-     * @return int
-     */
-    public function getId(): int
+    public function include($path)
     {
-        return $this->id;
+        echo $this->render($path);
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId(int $id ): void
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getKeyword(): string
-    {
-        return $this->keyword;
-    }
-
-    /**
-     * @param string $keyword
-     */
-    public function setKeyword(string $keyword): void
-    {
-        $this->keyword = $keyword;
-    }
 }
 
-$model = new \core\SimpleORM(Pages::class);
-
-$page = new Pages();
-
-
-//$page->setTitle('Главная');
-//$page->setPreview('sdfsf');
-//$page->setDescription('44dssd44');
-//$page->setKeyword('dsdfwww');
-
-//$model->findAllBy();
-
-//$model->findAll();
-//$res = $model->toArray();
-echo '<pre>';
-print_r($page);
-//print_r($res);
+$v = View::getInstance();
+$v->title = 'ttt title';
+echo $v->render('layouts/main');
