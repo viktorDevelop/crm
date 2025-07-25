@@ -1,5 +1,5 @@
 <?php
-namespace crm\core;
+namespace core;
 
 /**
  *  @method View render($path)
@@ -8,6 +8,7 @@ class View
 {
     private $data = [];
     private static $instance;
+    private $arComponent;
 
     private function __construct() {}
 
@@ -31,13 +32,12 @@ class View
      * @return false|string
      *
      */
-    public function render($view ='')
+    public function render($view ='',$data = [])
     {
-        foreach ($this->data as $key => $value) {
-            $$key = $value;
-        }
+        extract($data);
+
         ob_start();
-        $path = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$view.'/template.php';
+        $path = $_SERVER['DOCUMENT_ROOT'].'/views/'.$view.'.php';
 
         if (file_exists($path)) {
             include $path;
@@ -48,6 +48,22 @@ class View
         $content = ob_get_contents();
         ob_clean();
         return $content;
+    }
+
+    final public function includeComponts()
+    {
+
+        foreach ($this->arComponent as $k=>$val)
+        {
+            $oVal = new $val['component_class']();
+
+            echo $oVal->render();
+        }
+    }
+
+    final public function addComponents($ar)
+    {
+        $this->arComponent = $ar;
     }
 
 }

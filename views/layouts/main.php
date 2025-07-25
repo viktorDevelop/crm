@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?=$title;?></title>
+    <title><?=$title?></title>
 </head>
 <body>
 
 <?
-/** @var $this \View  */
+/** @var $this \core\View  */
+
+//
+//foreach ($component as $k=>$item)
+//{
+//    echo $component[$k];
+//}
+//var_dump($component);
+
+$this->includeComponts();
 
 
-$this->include('partials/header'); ?>
-
-<? $this->include('pages/'.$page); ?>
-
-<? $this->include('partials/footer');?>
+?>
+<script type="module" src="/templates/js/app.js"></script>
 
 </body>
 </html>
