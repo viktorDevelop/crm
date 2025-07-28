@@ -5,6 +5,7 @@ namespace controllers;
 use components\Comment\CommentList;
 use core\interfaces\Controller;
 use core\Request;
+use core\Responce;
 
 class CategoryController extends BaseController implements Controller
 {
@@ -21,14 +22,21 @@ class CategoryController extends BaseController implements Controller
 
     }
 
-    public function actionFind()
+    public function actionFind(Request $request)
     {
-        echo 'rest actionFind';
+       return Responce::send([
+           'success'=>true,
+            '$request'=>$request->data()
+       ]);
     }
 
-    public function actionStore()
+    public function actionStore(Request $request)
     {
-        echo 'rest actionStore';
+        return Responce::send([
+            'success'=>true,
+            'request'=>$request->data()
+        ]);
+
     }
 
     public function actionUpdate()

@@ -11,6 +11,7 @@ class SimpleORM
     private array $arResult = [];
     private int $lastInsertId;
     protected $relation;
+    private array $error = [];
 
     public function __construct(string $modelClass)
     {
@@ -140,8 +141,9 @@ class SimpleORM
         $values = [];
 
         // Определяем первичный ключ и его значение
-        echo '<pre>';
-        print_r($this->mapping );
+//        echo '<pre>';
+//        print_r($this->mapping );
+        unset($this->mapping['relation']);
         foreach ($this->mapping as $property => $config) {
             if ($config['primary']) {
                 $primaryKey = $config['column'];
@@ -171,16 +173,26 @@ class SimpleORM
         $placeholders = implode(', ', array_fill(0, count($columns), '?'));
         $columnsStr = implode(', ', $columns);
 
-        $sql = "INSERT INTO {$this->table} ({$columnsStr}) VALUES ({$placeholders})";
+          $sql = "INSERT INTO {$this->table} ({$columnsStr}) VALUES ({$placeholders})";
         $stmt = $this->pdo->prepare($sql);
 
-        if ($stmt->execute($values)) {
-            // Устанавливаем ID для нового объекта
-            $id = $this->pdo->lastInsertId();
-            $this->lastInsertId = $id;
-            $this->setPropertyValue($entity, 'id', $id);
-            return true;
+        try {
+            if ($stmt->execute($values)) {
+                // Устанавливаем ID для нового объекта
+                $id = $this->pdo->lastInsertId();
+                $this->lastInsertId = $id;
+                $this->setPropertyValue($entity, 'id', $id);
+                return true;
+            }
+        }catch (\PDOException $exception)
+        {
+            $this->error = [
+                'e'=>$exception->getMessage(),
+                'em'=>$exception->getTraceAsString()
+
+            ];
         }
+
 
         return false;
     }
@@ -251,6 +263,14 @@ class SimpleORM
         return  $res;
     }
 
+    /**
+     * @return array
+     */
+    public function getError(): array
+    {
+        return $this->error;
+    }
+
     private function ManyToOne( SimpleORM $orm, $propsName,$foreinKey,$val,$res): void
     {
 
@@ -317,6 +337,7 @@ class SimpleORM
         }
 
         $entity = $this->hydrate($data);
+        $this->arResult[] = $data;
 //        $this->loadRelations($entity);
 
         return $entity;

@@ -8,18 +8,13 @@
 <?
 /** @var $this \core\View  */
 
-//
-//foreach ($component as $k=>$item)
-//{
-//    echo $component[$k];
-//}
-//var_dump($component);
+
 
 $this->includeComponts();
 
 
 ?>
-<script type="module" src="/templates/js/app.js"></script>
+<!--<script type="module" src="/views/js/app.js"></script>-->
 
 </body>
 </html>

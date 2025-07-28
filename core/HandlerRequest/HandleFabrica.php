@@ -25,7 +25,7 @@ class HandleFabrica
                 throw new \Exception("Error Processing Request, method undefined", 1);
             }
 
-                $oController->{$action}($request);
+              echo  $oController->{$action}($request);
         }catch (\Exception $exception)
         {
             echo $exception->getMessage();

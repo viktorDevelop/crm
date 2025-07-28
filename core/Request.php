@@ -23,7 +23,7 @@ class Request
     {
         $post = file_get_contents('php://input');
         $arPost = ($post) ? json_decode($post,true) : [];
-        if (isset($_POST))
+        if (!empty($_POST))
             $arPost = array_merge($_POST, $arPost);
 
         if ($arPost && $name && key_exists($name,$arPost))

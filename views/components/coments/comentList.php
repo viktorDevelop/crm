@@ -1,6 +1,7 @@
-comments
-<?
-/** @var $this \core\View */
+<!--comments sdfsdf-->
+<?//
+///** @var $this \core\View */
+//
+//
+//?>
 
-
-?>

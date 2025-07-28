@@ -23,6 +23,16 @@ return
                 ]
             ]
         ],
+
+        [
+            'condition'=>'#^/registation/?$#',
+            'rule'=>'',
+            'handler'=>\controllers\Registation::class,
+            'type'=>'',
+            'components'=> [
+              [  'component_class'=> \components\registration\form\Registration::class]
+            ]
+        ],
         [
             'condition'=>'#^/api/category/?$#',
             'rule'=>'',
