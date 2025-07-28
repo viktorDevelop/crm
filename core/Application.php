@@ -1,7 +1,9 @@
 <?php
 namespace core;
 
+use controllers\AutorizateController;
 use core\HandlerRequest\HandleFabrica;
+use core\Helpers\AES;
 use core\Request;
 
 
@@ -10,6 +12,7 @@ class Application
 
     public static function run($routes)
     {
+
         $uri = $_SERVER['REQUEST_URI'];
         foreach ($routes as $k=>$item)
         {
@@ -19,6 +22,8 @@ class Application
                 $curent_rule = $item;
             }
         }
+
+
         parse_str($rule,$url_params);
         HandleFabrica::create($curent_rule['handler'],$url_params,$curent_rule['components'],$curent_rule['type']);
     }

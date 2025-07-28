@@ -6,6 +6,7 @@ class HandleFabrica
 {
     public static function create($controller,$url_params = [],$arComponents = [],$type = '')
     {
+
         $method = $_SERVER['REQUEST_METHOD'];
         try {
             if (!class_exists($controller))

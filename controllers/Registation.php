@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use core\Helpers\AES;
 use core\interfaces\Controller;
 use core\Request;
 use core\Responce;
@@ -22,11 +23,21 @@ class Registation extends BaseController implements Controller
 
     public function actionStore(Request $request)
     {
-        $token = 'sd';
+        $passwrod = $request->data('password');
+        $passwrod = md5(sha1($passwrod));
+        $token_data = [
+           "login"=> $request->data('login'),
+            "role"=>$request->data('role'),
+            'data_created'=>(new \DateTime('now'))->format('Y-m-d h:i'),
+            'date_expired'=>(new \DateTime('now'))->modify('+2 hour')->format('Y-m-d h:i')
+        ];
+
+        $token_data = json_encode($token_data);
+        $token = AES::encrypt($token_data,$passwrod);
         $user = new Users(
             $request->data('login'),
             $request->data('name'),
-            $request->data('password'),
+            $passwrod,
             $request->data('role'),
             $token
 

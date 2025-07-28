@@ -3,24 +3,18 @@ export default {
     {
         return {
             login:'',
-            name:'',
-            password:'',
-            role:'public'
+            password:''
         }
     },
     methods:{
-       async sendRegistry()
+      async  send()
         {
-
             const userData = {
                 "login":this.login,
-                "name":this.name,
-                "password":this.password,
-                "role":this.role
-
+                "password":this.password
             }
 
-            fetch('/registation/', {
+            fetch('/autorizate/', {
                 method: 'POST',
                 body: JSON.stringify(userData),
                 headers: {
@@ -31,4 +25,5 @@ export default {
                 .then((json) => console.log(json));
         }
     }
+
 }

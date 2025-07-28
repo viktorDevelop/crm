@@ -13,11 +13,11 @@ class Users extends SimpleORM
     public string $token;
 
     public function __construct(
-      $login,
-       $name,
-       $password,
-       $role,
-        $token
+      $login ='',
+       $name ='',
+       $password ='',
+       $role ='',
+        $token =''
     )
     {
 

@@ -33,6 +33,17 @@ return
               [  'component_class'=> \components\registration\form\Registration::class]
             ]
         ],
+
+
+        [
+            'condition'=>'#^/autorizate/?$#',
+            'rule'=>'',
+            'handler'=>\controllers\AutorizateController::class,
+            'type'=>'',
+            'components'=> [
+                [  'component_class'=> \components\autorizate\form\Autorizate::class]
+            ]
+        ],
         [
             'condition'=>'#^/api/category/?$#',
             'rule'=>'',
