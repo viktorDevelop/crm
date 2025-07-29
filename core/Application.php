@@ -1,6 +1,7 @@
 <?php
 namespace core;
 
+use components\autorizate\form\Autorizate;
 use controllers\AutorizateController;
 use core\HandlerRequest\HandleFabrica;
 use core\Helpers\AES;

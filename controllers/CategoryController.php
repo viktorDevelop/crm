@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use components\autorizate\form\Autorizate;
 use components\Comment\CommentList;
 use core\interfaces\Controller;
 use core\Request;
@@ -12,20 +13,19 @@ class CategoryController extends BaseController implements Controller
 
     public function actionExecute(Request $request)
     {
-
         return  $this->view->render('layouts/main',[
             'title'=>'home'
 
         ]);
-
-
     }
 
     public function actionFind(Request $request)
     {
+
        return Responce::send([
            'success'=>true,
-            '$request'=>$request->data()
+            '$request'=>$request->data(),
+
        ]);
     }
 
@@ -34,7 +34,8 @@ class CategoryController extends BaseController implements Controller
 
         return Responce::send([
             'success'=>true,
-            'request'=>$request->data()
+            'request'=>$request->data(),
+
         ]);
 
     }

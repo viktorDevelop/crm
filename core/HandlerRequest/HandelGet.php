@@ -2,6 +2,8 @@
 
 namespace core\HandlerRequest;
 
+use components\autorizate\form\Autorizate;
+
 class HandelGet extends AHandle
 {
     private string $type;
@@ -13,14 +15,19 @@ class HandelGet extends AHandle
 
     public function handle($request): ?string
     {
-        if ($request == 'GET')
-        {   if ($this->type == 'rest')
-        {
-            return 'actionFind';
+        $auth = Autorizate::checkUserRole();
 
-        }else{
-            return 'actionExecute';
-        }
+        if ($request == 'GET')
+        {
+            if ($this->type == 'rest')
+            {
+                if (!$auth)
+                    return 'action403';
+                return 'actionFind';
+
+            }else{
+                return 'actionExecute';
+            }
 
         }else{
             return parent::handle($request);
