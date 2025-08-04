@@ -1,10 +1,7 @@
 <?php
-
-use core\Helpers\AES;
-use models\Users;
-
 include $_SERVER['DOCUMENT_ROOT'].'/init.php';
-$routes = include 'bitrix/routes.php';
+
+$routes = include 'config/routes.php';
 \core\Application::run($routes);;
 
 // авторизация

@@ -1,13 +1,6 @@
 <?php
 namespace core;
 
-use components\autorizate\form\Autorizate;
-use controllers\AutorizateController;
-use core\HandlerRequest\HandleFabrica;
-use core\Helpers\AES;
-use core\Request;
-
-
 class Application
 {
 
@@ -23,11 +16,14 @@ class Application
                 $curent_rule = $item;
             }
         }
+        parse_str($rule,$arUrlParams);
+        if (empty($curent_rule))
+            http_response_code(404);
 
-
-        parse_str($rule,$url_params);
-        HandleFabrica::create($curent_rule['handler'],$url_params,$curent_rule['components'],$curent_rule['type']);
+        $request = new Request($arUrlParams);
+        HandleFabrica::create($curent_rule,$request);
     }
+
 
 
 }

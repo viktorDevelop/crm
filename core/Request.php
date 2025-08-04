@@ -37,11 +37,15 @@ class Request
         return $_SERVER['REQUEST_METHOD'];
     }
 
+
     /**
-     * @return array
+     * @param $k
+     * @return array|string|null
      */
-    public function getParams(): array
+    public function getParams($k = ''): array | string | null
     {
+        if (!empty($k))
+            return $this->params[$k];
         return $this->params;
     }
 }

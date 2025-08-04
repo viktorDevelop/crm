@@ -1,16 +1,12 @@
 <?php
 namespace core;
 
-/**
- *  @method View render($path)
- */
 class View
 {
-    private $data = [];
     private static $instance;
-    private $arComponent;
-
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     public static function getInstance()
     {
@@ -21,28 +17,15 @@ class View
         return self::$instance;
     }
 
-    public function __set($k,$v)
-    {
-        $this->data[$k] = $v;
-    }
-
-    /**
-     * @param $view
-     *
-     * @return false|string
-     *
-     */
-    public function render($view ='',$data = [])
+    public function render($tmp,$data = [])
     {
         extract($data);
-
-        ob_start();
-        $path = $_SERVER['DOCUMENT_ROOT'].'/views/'.$view.'.php';
-
-        if (file_exists($path)) {
+        $path = $_SERVER['DOCUMENT_ROOT'].'/template/'.$tmp.'/template.php';
+        if (file_exists($path))
+        {
             include $path;
         }else{
-            echo "404";
+            include '404.php';
         }
 
         $content = ob_get_contents();
@@ -50,20 +33,19 @@ class View
         return $content;
     }
 
-    final public function includeComponts()
+    public function include($view,$data = [])
     {
-
-        foreach ($this->arComponent as $k=>$val)
-        {
-            $oVal = new $val['component_class']();
-
-            echo $oVal->render();
-        }
+        $tmp = 'views/table';
+        $path = $_SERVER['DOCUMENT_ROOT'].'/template/'.$tmp.'/template.php';
+        extract($data);
+        ob_start();
+        include $path;
+        $content = ob_get_contents();
+        ob_clean();
+        echo $content;
     }
 
-    final public function addComponents($ar)
-    {
-        $this->arComponent = $ar;
-    }
+
 
 }
+
