@@ -4,15 +4,10 @@ namespace controllers;
 
 use core\Request;
 
-class PageController
+class PageController extends BaseController
 {
-    public function find(Request $request)
-    {
-        return 'find page';
-    }
+     public function execute(Request $request)
+     {
 
-    public function execute()
-    {
-
-    }
+     }
 }

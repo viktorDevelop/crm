@@ -35,8 +35,8 @@ class View
 
     public function include($view,$data = [])
     {
-        $tmp = 'views/table';
-        $path = $_SERVER['DOCUMENT_ROOT'].'/template/'.$tmp.'/template.php';
+
+        $path = $_SERVER['DOCUMENT_ROOT'].'/template/views/'.$view.'/template.php';
         extract($data);
         ob_start();
         include $path;

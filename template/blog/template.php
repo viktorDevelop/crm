@@ -13,10 +13,17 @@
 <?
 /** @var $this \core\View */
 
-//var_dump($postData);
+//var_dump($data);
+$this->include('menu/top',['data'=>$data]);
 $this->include('table',['postData'=>$postData]);
 ?>
 
-
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        background-color: ;
+    }
+</style>
 </body>
 </html>
