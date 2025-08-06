@@ -2,6 +2,7 @@
 namespace core\HandlerRequest;
 
 use controllers\NotFoundController;
+use core\PageConfigHelper;
 use core\Request;
 
 abstract class MethodHandle
@@ -9,16 +10,14 @@ abstract class MethodHandle
     protected $type;
     protected $object;
 
-    public function __construct($object,Request $request,$arComponents = [],$isRest = false)
+    public function __construct( PageConfigHelper $configPage)
     {
-        $this->request = $request;
-        $this->type = $isRest;
-        if (!class_exists($object)){
-            $this->object =  new NotFoundController((new Request()));
-        }else{
-            $obj = new  $object($arComponents);
-            $this->object = $obj;
-        }
+
+        $this->type = $configPage->isRest;
+
+        $this->request = $configPage->Request;
+//        echo "<pre>";
+//        var_dump();
 
     }
 

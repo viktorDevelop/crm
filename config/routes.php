@@ -57,13 +57,13 @@ return [
     ],
 
     [
-        'condition'=>'#^/api/([a-z-]+)/([a-z-]+)/?$#',
-        'rule'=>'category_code=$1',
-        'handle'=>\controllers\PageController::class,
-        'components'=>[
-            ['className'=>PostsTop::class,'params'=>['limit'=>6] ],
+        'condition'=>'#^/api/([a-z-]+)/?$#',
+        'rule'=>'handle=$1'
+    ],
 
-        ]
+    [
+        'condition'=>'#^/api/([a-z-]+)/([0-9]+)/?$#',
+        'rule'=>'handle=$1&id=$2'
     ],
 
 ];

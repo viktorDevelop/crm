@@ -21,7 +21,16 @@ class Application
             http_response_code(404);
 
         $request = new Request($arUrlParams);
-        HandleFabrica::create($curent_rule,$request);
+
+//        echo '<pre>';
+//        var_dump($arUrlParams);
+
+        $configPage = new PageConfigHelper;
+        $configPage->components = (isset($curent_rule['components'])) ? $curent_rule['components'] : null;
+        $configPage->isRest =  isset($arUrlParams['handle']) ?? null;
+        $configPage->Request  = $request;
+
+        HandleFabrica::create($configPage);
     }
 
 
