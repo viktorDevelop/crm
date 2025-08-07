@@ -1,29 +1,41 @@
 <?php
 namespace controllers;
+use core\PageConfigHelper;
 use core\Request;
+use modules\posts\components\PostList;
+use modules\posts\Posts;
 
 abstract class BaseController
 {
-    public function __construct($arComponents = [])
+    protected PageConfigHelper $configPage;
+    public function __construct(PageConfigHelper $configPage)
     {
-
-//        echo '<pre>';
-//        print_r($configPage->arComponents);
-
+        $this->configPage = $configPage;
     }
 
-    public function execute(Request $request)
-    {
 
-    }
     public function template()
     {
         /** @var  $view \core\View */
         $view = \core\View::getInstance();
 
+        $arComponents = [];
+        foreach ($this->configPage->components as $k => $val)
+        {
+
+            $name =  explode('\\',  $val['className']);
+            $sName = end($name);
+            $sName .='Data';
+            $arComponents = [
+                [ $sName =>$val['className']::getData($val['params']),'views'=>$val['template']  ]
+            ];
+        }
+
         echo $view->render('blog',[
-            'postData'=>[],
-            'data'=>[]
+            "CategoryMenuTopData"=>[],
+            'components' =>  $arComponents
         ]);
     }
+
+    abstract public function  execute();
 }

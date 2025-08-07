@@ -28,7 +28,7 @@ class Application
         $configPage = new PageConfigHelper;
         $configPage->components = (isset($curent_rule['components'])) ? $curent_rule['components'] : null;
         $configPage->isRest =  isset($arUrlParams['handle']) ?? null;
-        $configPage->Request  = $request;
+        $configPage->request  = $request;
 
         HandleFabrica::create($configPage);
     }

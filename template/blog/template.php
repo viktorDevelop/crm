@@ -11,18 +11,24 @@
 </head>
 <body>
 <?
-/** @var $this \core\View */
+/** @var $this \core\View
+ * @var array $components;
+ */
+//echo '<pre>';
+//var_dump($components);
+//$this->include('menu/top',['data'=>$data]);
+foreach ($components as $key=>$items)
+{
+    $this->include($items['views'],$items);
+}
 
-//var_dump($data);
-$this->include('menu/top',['data'=>$data]);
-$this->include('table',['postData'=>$postData]);
+
 ?>
 
 <style>
     body{
         margin: 0;
         padding: 0;
-        background-color: ;
     }
 </style>
 </body>

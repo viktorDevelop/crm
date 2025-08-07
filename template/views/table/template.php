@@ -1,5 +1,6 @@
 <?php
 //echo '<pre>'; print_r($postData);
+$postData = $PostListData['PostListData'];
 $dataJson = htmlspecialchars(json_encode($postData),ENT_QUOTES,'UTF-8');
 ?>
 <div id="collection" v-cloak class="container" data-list='<?=$dataJson?>'>

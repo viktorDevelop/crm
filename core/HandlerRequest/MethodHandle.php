@@ -8,17 +8,12 @@ use core\Request;
 abstract class MethodHandle
 {
     protected $type;
-    protected $object;
-
+    protected PageConfigHelper $configPage;
     public function __construct( PageConfigHelper $configPage)
     {
-
+        $this->configPage = $configPage;
         $this->type = $configPage->isRest;
-
-        $this->request = $configPage->Request;
-//        echo "<pre>";
-//        var_dump();
-
+        $this->request = $configPage->request;
     }
 
     abstract function getHandler();

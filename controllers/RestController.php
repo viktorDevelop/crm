@@ -12,9 +12,15 @@ class RestController implements Resource
     {
         $name = $request->getParams('handle');
          $sName = '\\modules\\'.$name.'\\'.ucfirst($name).'Service';
-
+         if (!class_exists($sName))
+         {
+             return Responce::send([
+                 'status'=>false,
+                 'message'=>'not found data'
+             ],404);
+         }
          $oHandle = new $sName($request);
-        $componentData = '';
+
       return  Responce::send([
             'data'=>$oHandle->getData()
         ]);

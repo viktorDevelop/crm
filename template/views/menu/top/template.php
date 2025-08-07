@@ -1,4 +1,5 @@
-<?php if($data):?>
+<?php
+if($data):?>
 <ul>
     <?foreach ($data as $k=>$item):?>
     <li>

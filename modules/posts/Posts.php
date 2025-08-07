@@ -1,7 +1,9 @@
 <?php
 namespace modules\posts;
 
-class Posts
+use core\SimpleORM;
+
+class Posts extends SimpleORM
 {
     public ?int $id;
     public string $title;

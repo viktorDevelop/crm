@@ -4,7 +4,7 @@ namespace core;
 /**
  * @property bool $isRest
  * @property array $components
- * @property Request  Request
+ * @property Request  $request
  */
 class PageConfigHelper extends \stdClass
 {

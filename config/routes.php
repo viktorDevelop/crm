@@ -22,12 +22,12 @@ return [
         'rule'=>'category_code=$1',
         'components'=>[
             [
-                'className'=>\components\ComponentItems::class,
+                'className'=>\modules\posts\components\PostList::class,
+                'template'=>'table',
                 'params'=>[
-                    'limit'=>6,
+                    'limit'=>2,
                     'pagen'=>true,
                     'comment'=>true,
-                    'model'=>Posts::class,
                     'varible'=>[
                         'category_code'
                     ]
@@ -41,7 +41,7 @@ return [
         'rule'=>'category_code=$1&element_code=$2',
         'components'=>[
             [
-                'className'=>\components\ComponentItems::class,
+                'className'=>'',
                 'params'=>[
                     'limit'=>6,
                     'pagen'=>true,
