@@ -18,19 +18,17 @@ abstract class BaseController
     {
         /** @var  $view \core\View */
         $view = \core\View::getInstance();
-
         $arComponents = [];
+
         foreach ($this->configPage->components as $k => $val)
         {
-
             $name =  explode('\\',  $val['className']);
             $sName = end($name);
             $sName .='Data';
             $arComponents = [
-                [ $sName =>$val['className']::getData($val['params']),'views'=>$val['template']  ]
+                [ $sName =>$val['className']::getData($val['params'],$this->configPage->request),'views'=>$val['template']  ]
             ];
         }
-
         echo $view->render('blog',[
             "CategoryMenuTopData"=>[],
             'components' =>  $arComponents

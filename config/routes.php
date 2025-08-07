@@ -26,8 +26,6 @@ return [
                 'template'=>'table',
                 'params'=>[
                     'limit'=>2,
-                    'pagen'=>true,
-                    'comment'=>true,
                     'varible'=>[
                         'category_code'
                     ]

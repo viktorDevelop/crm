@@ -1,6 +1,7 @@
 <?php
 namespace modules\posts;
 use core\Request;
+use modules\category\CategoryService;
 
 class PostsService
 {
@@ -31,11 +32,20 @@ class PostsService
     {
         $limit = $arParams['limit'] ?? 20;
         $offset = $arParams['offset'] ?? 0;
+        $section_code = $arParams['section_code'] ?? 0;
+
+        $category = new CategoryService();
+        $id = $category->getCategoryIDByCode($section_code);
 
         $posts = new Posts();
-        $posts->findAll($limit,$offset);
+        $posts->findAllBy(['category_id'=>$id]);
         $data = [];
         $data =  $posts->toArray();
+
+//        echo '<pre>';
+//        print_r($data);
         return $data;
     }
+
+//    public function Post
 }
