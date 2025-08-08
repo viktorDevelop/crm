@@ -10,6 +10,7 @@ abstract class BaseController
     protected PageConfigHelper $configPage;
     public function __construct(PageConfigHelper $configPage)
     {
+
         $this->configPage = $configPage;
     }
 

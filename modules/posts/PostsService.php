@@ -33,17 +33,29 @@ class PostsService
         $limit = $arParams['limit'] ?? 20;
         $offset = $arParams['offset'] ?? 0;
         $section_code = $arParams['section_code'] ?? 0;
-
         $category = new CategoryService();
-        $id = $category->getCategoryIDByCode($section_code);
-
+        $section_id = $category->getCategoryIDByCode($section_code);
         $posts = new Posts();
-        $posts->findAllBy(['category_id'=>$id]);
+        $posts->findAllBy(['category_id'=>$section_id]);
         $data = [];
         $data =  $posts->toArray();
 
-//        echo '<pre>';
-//        print_r($data);
+        return $data;
+    }
+
+    public function postItemByCode($arParams = [])
+    {
+        $data = [];
+        $section_code = $arParams['section_code'] ?? 0;
+        $postAlias = $arParams['element_code'] ?? 0;
+
+        $category = new CategoryService();
+        $section_id = $category->getCategoryIDByCode($section_code);
+
+        $posts = new Posts();
+        $posts->findAllBy(['category_id'=>$section_id,'alias'=>$postAlias]);
+        $data = $posts->toArray();
+
         return $data;
     }
 

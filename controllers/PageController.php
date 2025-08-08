@@ -11,8 +11,6 @@ class PageController extends BaseController
     {
 //        echo '<pre>';
 //        print_r($this->configPage->components);
-
-
        return $this->template();
     }
 }

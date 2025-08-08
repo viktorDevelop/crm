@@ -17,6 +17,9 @@
 //echo '<pre>';
 //var_dump($components);
 //$this->include('menu/top',['data'=>$data]);
+
+$this->include('admin/menu');
+
 foreach ($components as $key=>$items)
 {
     $this->include($items['views'],$items);

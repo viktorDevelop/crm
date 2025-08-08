@@ -1,5 +1,5 @@
 <?php
-var_dump($PostListData);
+//var_dump($PostListData);
 ?>
 <div class="container">
     <div class=" col-md-12">

@@ -18,12 +18,24 @@ return [
     ],
 
     [
+        'condition'=>'#^/admin/page/new/?$#',
+        'rule'=>'',
+        'components' => [
+            [
+                'className'=>\modules\page\components\PageList::class,
+                'template'=>'admin/PageList',
+            ]
+        ]
+    ],
+
+
+    [
         'condition'=>'#^/category/([a-z-]+)/?$#',
         'rule'=>'category_code=$1',
         'components'=>[
             [
                 'className'=>\modules\posts\components\PostList::class,
-                'template'=>'table',
+                'template'=>'blocks',
                 'params'=>[
                     'limit'=>2,
                     'varible'=>[
@@ -36,15 +48,13 @@ return [
 
     [
         'condition'=>'#^/category/([a-z-]+)/([a-z0-9-]+)/?$#',
-        'rule'=>'category_code=$1&element_code=$2',
+        'rule'=>'section_code=$1&element_code=$2',
         'components'=>[
             [
-                'className'=>'',
+                'className'=>\modules\posts\components\PostItem::class,
                 'params'=>[
-                    'limit'=>6,
-                    'pagen'=>true,
+                    'template'=>'blocks',
                     'comment'=>true,
-                    'model'=>Posts::class,
                     'varible'=>[
                         'category_code',
                         'element_code'
@@ -53,6 +63,8 @@ return [
             ]
         ]
     ],
+
+
 
     [
         'condition'=>'#^/api/([a-z-]+)/?$#',
@@ -63,5 +75,6 @@ return [
         'condition'=>'#^/api/([a-z-]+)/([0-9]+)/?$#',
         'rule'=>'handle=$1&id=$2'
     ],
+
 
 ];
