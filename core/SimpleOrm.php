@@ -14,7 +14,7 @@ class SimpleOrm
      */
     public function __construct(string $modelClass)
     {
-        $this->pdo = Database::getInstance();
+        $this->pdo = Database::getInstance()->getPdoObject();
         $this->reflection = new \ReflectionClass($modelClass);
         $this->table = $this->resolveTableName($modelClass);
         $this->mapping = $this->createPropertyMapping();
@@ -48,8 +48,8 @@ class SimpleOrm
 
     private function resolveTableName(string $modelClass):string
     {
-        $shortName = $this->reflection->getShortName();
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $shortName)) . 's';
+         $shortName = $this->reflection->getShortName();
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $shortName));
     }
 
     private function getPropertyType(\ReflectionProperty $property): string
@@ -71,6 +71,35 @@ class SimpleOrm
         return 'string'; // Тип по умолчанию
     }
 
+    private function setPropertyValue(object $entity, string $property, $value): void
+    {
+        $reflectionProperty = $this->reflection->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+
+        // Приведение типов
+        $type = $this->mapping[$property]['type'] ?? null;
+        if ($type) {
+            settype($value, $type);
+        }
+
+        $reflectionProperty->setValue($entity, $value);
+    }
+
+    private function hydrate(array $data): object
+    {
+        $entity = $this->reflection->newInstanceWithoutConstructor();
+
+        foreach ($this->mapping as $property => $config) {
+            $column = $config['column'];
+            if (array_key_exists($column, $data)) {
+                $value = $data[$column];
+                $this->setPropertyValue($entity, $property, $value);
+            }
+        }
+
+        return $entity;
+    }
+
 
     public function find($id): ?object
     {
@@ -90,7 +119,7 @@ class SimpleOrm
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$id]);
 
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
         if (!$data) {
             return null;
         }
