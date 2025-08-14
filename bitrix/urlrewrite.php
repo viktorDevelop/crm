@@ -5,19 +5,25 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 
 class BaseController
 {
+    protected $arComponents = [];
     public function __construct($params = [])
     {
         $arComponents = $params['components'] ?? null;
+//        echo '<pre>';
+//        print_r($arComponents);
         foreach($arComponents as $k => $items)
         {
-
+            $this->arComponents = [
+                'page' => (new $items['componentClass'])->execute()
+            ];
         }
 
     }
 
     public function template()
     {
-        echo 'view blog';
+
+       echo \core\Views::getInstance()->render('blog',['page'=>$this->arComponents]);
     }
 }
 

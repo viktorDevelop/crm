@@ -19,8 +19,8 @@ class Application
                 'rule'=>'section_code=$2&element_code=$3',
                 'components'=>[
                     [
-                        'category'=>\modules\category\components\CategoryComponent::class,
-                        'params'=>''
+                        'componentClass'=>\modules\category\components\CategoryComponent::class,
+                        'params'=>['pagen'=>true,'limit'=>10]
                     ]
                 ]
             ],
@@ -38,6 +38,8 @@ class Application
 
         parse_str($rule,$resArrGetParams);
 
+        $page_c = new \PageController($current_rules);
+        $page_c->execute();
         if ($current_rules['rest']){
             $object = $resArrGetParams['handler'];
            echo HandlerFactory::create($object);
