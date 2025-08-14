@@ -1,14 +1,16 @@
 <?php
 namespace core;
 
+
 class Application
 {
     public static function run()
     {
         $routes = [
             [
-                'condition'=>'#^/api/([a-z-]+)/?$#',
-                'rule'=>'handler=$1'
+                'condition'=>'#^/api/([a-z-]+)/?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
+                'rule'=>'handler=$1&id=$2',
+                'rest'=>true
             ],
 
 
@@ -17,7 +19,8 @@ class Application
                 'rule'=>'section_code=$2&element_code=$3',
                 'components'=>[
                     [
-                        'category'=>Category::class
+                        'category'=>\modules\category\components\CategoryComponent::class,
+                        'params'=>''
                     ]
                 ]
             ],
@@ -34,6 +37,13 @@ class Application
         }
 
         parse_str($rule,$resArrGetParams);
-        var_dump($current_rules['components']);
+
+        if ($current_rules['rest']){
+            $object = $resArrGetParams['handler'];
+           echo HandlerFactory::create($object);
+
+        }
+
+
     }
 }
