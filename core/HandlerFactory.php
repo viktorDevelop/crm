@@ -1,7 +1,10 @@
 <?php
 namespace core;
 
+use core\handlers\MethodDelete;
 use core\handlers\MethodGet;
+use core\handlers\MethodPatch;
+use core\handlers\MethodPost;
 
 class HandlerFactory
 {
@@ -13,10 +16,10 @@ class HandlerFactory
         switch ($method)
         {
             case 'GET':return (new MethodGet($object))->handle();
-            case 'POST':return '';
-            case 'PUT':return '';
-            case 'PUTCH':return '';
-            case 'DELETE':return '';
+            case 'POST':return (new MethodPost($object))->handle();
+            case 'PUT':return (new MethodPatch($object))->handle();
+            case 'PATCH':return (new MethodPatch($object))->handle();
+            case 'DELETE':return (new MethodDelete($object))->handle();
             default: return false;
         }
     }
