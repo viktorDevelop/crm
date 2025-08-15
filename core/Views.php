@@ -3,7 +3,7 @@ namespace core;
 class Views
 {
     private static $instance;
-
+    protected $arDataPage;
     private function __construct()
     {
     }
@@ -26,6 +26,7 @@ class Views
 
     public function render($tmp,$data = [])
     {
+        $this->arDataPage = $data['page'];
         extract($data);
         ob_start();
         $path = $_SERVER['DOCUMENT_ROOT'].'/views/'.$tmp.'/template.php';
@@ -41,8 +42,11 @@ class Views
         return $content;
     }
 
-    public function includeWidjet($name)
+    public function includeContent()
     {
-//        echo $name;
+        foreach ($this->arDataPage as $k=>$item)
+        {
+            echo $item;
+        }
     }
 }

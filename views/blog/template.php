@@ -10,8 +10,9 @@
 <body>
 
 <? /** @var $this \core\Views */
-echo '<pre>';
-var_dump($page['page']);
+
+$this->includeContent();
+//var_dump($page);
 ?>
 </body>
 </html>

@@ -18,10 +18,21 @@ class Application
                 'condition' => '#^/([category]+)(?:/([a-z-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
                 'rule'=>'section_code=$2&element_code=$3',
                 'components'=>[
-                    [
+
                         'componentClass'=>\modules\category\components\CategoryComponent::class,
-                        'params'=>['pagen'=>true,'limit'=>10]
-                    ]
+                        'params'=>[
+                            'categoryList'=>[
+                                'limit'=>10
+                            ],
+                            'postsList'=>[
+                                'limit'=>5
+                            ],
+                            'post'=>[
+                                'showComment'=>true
+                            ]
+
+                        ]
+
                 ]
             ],
 
@@ -38,14 +49,12 @@ class Application
 
         parse_str($rule,$resArrGetParams);
 
-        $page_c = new \PageController($current_rules);
+        $page_c = new \PageController($current_rules,$resArrGetParams);
         $page_c->execute();
         if ($current_rules['rest']){
             $object = $resArrGetParams['handler'];
            echo HandlerFactory::create($object);
 
         }
-
-
     }
 }

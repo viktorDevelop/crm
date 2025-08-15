@@ -6,24 +6,24 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
 class BaseController
 {
     protected $arComponents = [];
-    public function __construct($params = [])
+    public function __construct($params = [],$getParams)
     {
         $arComponents = $params['components'] ?? null;
+        $componentParams = $params['components']['params'] ?? null;
+        $this->arComponents['componentClass'] = (new $params['components']['componentClass'])->execute($getParams,$componentParams);
 //        echo '<pre>';
-//        print_r($arComponents);
-        foreach($arComponents as $k => $items)
-        {
-            $this->arComponents = [
-                'page' => (new $items['componentClass'])->execute()
-            ];
-        }
+//        print_r();
+
 
     }
 
     public function template()
     {
 
-       echo \core\Views::getInstance()->render('blog',['page'=>$this->arComponents]);
+        $view = \core\Views::getInstance();
+      echo  $view->render('blog',[
+            'page'=> $this->arComponents
+        ]);
     }
 }
 
@@ -34,5 +34,6 @@ class PageController extends BaseController
         return $this->template();
     }
 }
+
 
 
