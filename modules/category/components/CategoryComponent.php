@@ -1,6 +1,8 @@
 <?php
 namespace modules\category\components;
 
+use core\collections\ComponentItem;
+use core\collections\ComponentList;
 use core\Views;
 use modules\category\Category;
 
@@ -12,41 +14,36 @@ class CategoryComponent
     private $section_code = null;
     private $element_code = null;
     private $arResult = [];
+    private  $state;
+    /**
+     * @var array|mixed
+     */
+    private mixed $arParams;
 
     public function execute($request = [],$params = [])
     {
-        $this->limit = $params['limit'] ?? null;
-        $this->pagen = $params['pagen'] ?? null;
-        $this->showComment = $params['comment'] ?? null;
+        $this->arParams = $params;
         $this->section_code = $request['section_code'] ?? null;
         $this->element_code = $request['element_code'] ?? null;
-        echo '<pre>';
+        $this->setState();
+//        echo '<pre>';
 //        print_r($request);
-        var_dump($params);
+//        var_dump($this->state);
 
-        $this->getCategoryList($params);
-        return Views::getInstance()->render('blog/posts/blocks',['categoryData'=>$this->arResult]);
+        return $this->state->render();
     }
 
-
-
-    protected function getCategoryList($params)
+    public function setState()
     {
-        if ($this->section_code || $this->element_code)
-            return ;
-        $category = new Category();
-        $category->findAll();
-        $this->arResult = $category->toArray();
+        if (!$this->section_code)
+             $this->state = new ComponentList($this->arParams['sectionList']);
+        if ($this->section_code)
+            $this->state = new ComponentList($this->arParams['itemList']);
+        if ($this->element_code)
+            $this->state = new ComponentItem($this->arParams['item']);
     }
 
-    protected function getPostsByCategory()
-    {
 
-    }
 
-    protected function getPostsByCode()
-    {
-
-    }
 
 }

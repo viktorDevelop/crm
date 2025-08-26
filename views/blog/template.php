@@ -9,10 +9,16 @@
 </head>
 <body>
 
+<div style="margin: 0 auto; max-width: 1260px">
+
+
 <? /** @var $this \core\Views */
+
 
 $this->includeContent();
 //var_dump($page);
 ?>
+
+</div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <div>
-    blocks category
+    blocks posts list
 
-    <? print_r($categoryData)?>
+    <? //echo '<pre>';print_r($categoryData)?>
+
 </div>

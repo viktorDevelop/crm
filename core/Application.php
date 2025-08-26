@@ -2,6 +2,8 @@
 namespace core;
 
 
+
+
 class Application
 {
     public static function run()
@@ -15,23 +17,52 @@ class Application
 
 
             [
-                'condition' => '#^/([category]+)(?:/([a-z-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
+                'condition' => '#^/([category]+)(?:/([a-z0-9-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
                 'rule'=>'section_code=$2&element_code=$3',
                 'components'=>[
 
                         'componentClass'=>\modules\category\components\CategoryComponent::class,
                         'params'=>[
-                            'categoryList'=>[
-                                'limit'=>10
+                            'sectionList'=>[
+                                'limit'=>10,
+                                'template'=>'blog/category/blocks',
+                                'model'=>\modules\category\Category::class
                             ],
-                            'postsList'=>[
-                                'limit'=>5
+                            'itemList'=>[
+                                'limit'=>5,
+                                'template'=>'blog/posts/blocks',
+                                'model'=>''
                             ],
-                            'post'=>[
-                                'showComment'=>true
+                            'item'=>[
+                                'template'=>'blog/posts/items'
                             ]
 
                         ]
+
+                ]
+            ],
+            [
+                'condition' => '#^/([contact]+)(?:/([a-z0-9-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
+                'rule'=>'section_code=$2&element_code=$3',
+                'components'=>[
+
+                    'componentClass'=>\modules\category\components\CategoryComponent::class,
+                    'params'=>[
+                        'sectionList'=>[
+                            'limit'=>10,
+                            'template'=>'blog/category/blocks',
+                            'model'=>\modules\category\Category::class
+                        ],
+                        'itemList'=>[
+                            'limit'=>5,
+                            'template'=>'blog/posts/blocks',
+                            'model'=>''
+                        ],
+                        'item'=>[
+                            'template'=>'blog/posts/items'
+                        ]
+
+                    ]
 
                 ]
             ],
