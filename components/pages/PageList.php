@@ -1,11 +1,13 @@
 <?php
-namespace components\posts;
+namespace components\pages;
 
 use core\BaseComponent;
 use core\interfaces\ComponentInterface;
 
-class PostsList extends BaseComponent
+class PageList extends BaseComponent
 {
+
+
 
     protected function getData()
     {

@@ -2,11 +2,13 @@
 namespace components\category;
 
 
-class CategoryList
+use core\BaseComponent;
+
+class CategoryList extends BaseComponent
 {
-    public function render()
+
+    protected function getData()
     {
-        $view = \core\View::getInstance();
-       return $view->render('blog/category/list');
+         return  [['id'=>1,'title'=>'php']];
     }
 }

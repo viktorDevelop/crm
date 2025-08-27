@@ -10,6 +10,7 @@ $routes = [
     [
         'condition' => '#^/(category)(?:/([a-z0-9-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
         'rule'=>'section_code=$2&element_code=$3',
+        'type'=>'blog',
         'components'=>[
             'section'=>[
                 'componentClass'=>\components\category\CategoryList::class,
@@ -22,23 +23,39 @@ $routes = [
             ],
             'detail'=>[
                 'componentClass'=>\components\posts\PostsElements::class,
-                'template'=>'blog/posts/list',
+                'template'=>'blog/posts/detail',
             ]
         ]
     ],
 
-    [
-        'condition' => '#^/(admin-page-new)(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
+    [   // статичная страница, контент хранится в таблице с pages (field content)
+        'condition' => '#^/(contact)?(?:/(\?.*)?)?$#i',
         'rule'=>'section_code=$2&element_code=$3',
-        'aurization'=>[
+        'components'=>[
+            'section'=>[
+                'componentClass'=>\components\posts\PostsElements::class,
+                'template'=>'blog/posts/list',
+            ],
+            'list'=>[
+
+            ],
+            'detail'=>[]
+        ]
+    ],
+
+    [
+        'condition' => '#^/(admin-page)(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
+        'rule'=>'section_code=$2&element_code=$3',
+        'type'=>'admin',
+        'autorization'=>[
             'role'=>['admin']
         ],
         'components'=>[
             'section'=>[
+                'componentClass'=>\components\pages\PageList::class,
+                'template'=>'admin/pages'
+            ]
 
-            ],
-            'list'=>[],
-            'detail'=>[]
         ]
     ],
 

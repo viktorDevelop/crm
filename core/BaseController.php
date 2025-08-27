@@ -9,13 +9,15 @@ class BaseController
     private string $state;
     protected mixed $componentState;
 
+    protected mixed $typePage;
+
     public function __construct($params = [], \core\Request $request)
     {
 
         $this->params = $params;
         $this->request = $request;
         $this->setState();
-
+        $this->typePage = $params['type'] ?? null;
         $componentState = $params['components'][$this->state]['componentClass'] ?? null;
         if (!$componentState)
             $this->componentState = View::getInstance();
@@ -23,13 +25,9 @@ class BaseController
         {
             if (class_exists($componentState))
             {
-                $this->componentState = new $componentState();
+                $this->componentState = new $componentState($params['components'][$this->state]);
             }
         }
-//        echo $this->state;
-//        echo '<pre>';
-//        print_r($componentState);
-
     }
 
     public function beforeExecute()

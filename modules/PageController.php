@@ -8,9 +8,7 @@ class PageController extends BaseController
 {
     public function execute()
     {
-         $view = \core\View::getInstance();
-         $CategoryList = new CategoryList();
-        return $view->render('blog',['page'=> [ $this->componentState->render(404) ] ]);
-
+        $view = \core\View::getInstance();
+        return $view->render($this->typePage,['page'=> [ $this->componentState->render(404) ] ]);
     }
 }

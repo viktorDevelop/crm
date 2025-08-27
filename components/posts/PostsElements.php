@@ -1,14 +1,15 @@
 <?php
 namespace components\posts;
 
-class PostsElements
+use core\BaseComponent;
+use core\interfaces\ComponentInterface;
+
+class PostsElements extends BaseComponent
 {
-    public function render()
+
+
+    protected function getData()
     {
-        $view = \core\View::getInstance();
-        return $view->render('blog/posts/detail',['postsElementData'=>[
-            'post'=>[],
-            'comments'=>[]
-        ]]);
+        return [];
     }
 }
