@@ -32,7 +32,45 @@ class BaseController
 
     public function beforeExecute()
     {
+        $login = $_SESSION['login'] ?? null;
+        $token = $_SESSION['token'] ?? null;
 
+        $arPolitic = $this->params['autorization'] ?? false;
+        if (is_array($arPolitic))
+        {
+            $this->checkSuccess($arPolitic);
+        }
+
+//       var_dump($arPolitic );
+//       var_dump($a);
+    }
+
+
+
+    private  function checkSuccess($arPolitic)
+    {
+        if (!is_array($arPolitic))
+            return  false;
+
+        $login = $_SESSION['login'] ?? null;
+        $token = $_SESSION['token'] ?? null;
+
+        if (!$login) return  false;
+        if (!$token) return  false;
+
+        $token = unserialize($token);
+
+        $success = false;
+        foreach ($arPolitic['role'] as $k=>$value)
+        {
+            if (in_array($value,$token['role']))
+            {
+                $success = true;
+                break;
+            }
+        }
+//        var_dump($success);
+//        var_dump($token);
     }
 
     public function afterExecute()

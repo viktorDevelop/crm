@@ -7,6 +7,18 @@ $routes = [
         'rule'=>'handler=$1&id=$2',
         'rest'=>true
     ],
+
+    [
+        'condition'=>'#^/api/user/autorizate/?$#',
+        'rule'=>'',
+        'method'=>'post',
+        'action'=>'autorizate',
+        'handler'=>\components\users\UsersRestService::class,
+        'rest'=>true
+    ],
+
+
+
     [
         'condition' => '#^/(category)(?:/([a-z0-9-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
         'rule'=>'section_code=$2&element_code=$3',
@@ -44,11 +56,23 @@ $routes = [
     ],
 
     [
+        'condition' => '#^/auth/?$#',
+        'rule'=>'',
+        'type'=>'blog',
+        'components'=>[
+            'section'=>[
+                'componentClass'=>\components\users\autorization\Auth::class,
+                'template'=>'blog/forms/auth'
+            ]
+        ]
+    ],
+
+    [
         'condition' => '#^/(admin-page)(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
         'rule'=>'section_code=$2&element_code=$3',
         'type'=>'admin',
         'autorization'=>[
-            'role'=>['admin']
+            'role'=>['admin','supervizer']
         ],
         'components'=>[
             'section'=>[
@@ -64,6 +88,24 @@ $routes = [
 
 
 \core\Application::run($routes);
+
+
+//$user = new \components\users\Users();
+//
+//$user->model->find(2);
+//$res = $user->model->toArray();
+//print_r($res);
+//$user->find(1);
+
+//$user->login = 'admin';
+//$user->role = json_encode(['admin']);
+//$user->name = 'viktor';
+//$user->phone = '89507778899';
+//$user->password = md5(sha1(123456));
+////$user->save($user);
+//
+//$orm  = new \core\SimpleOrm(\components\users\Users::class);
+//$orm->save($user);
 
 
 

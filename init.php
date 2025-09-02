@@ -8,3 +8,8 @@ spl_autoload_register(function ($class){
     }
 
 });
+
+//$_SESSION['user_id'] = 1;
+//$_SESSION['token'] = serialize(['role'=>['admin','supervizer','id'=>1]]);
+
+//unset($_SESSION);

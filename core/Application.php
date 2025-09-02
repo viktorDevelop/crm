@@ -1,7 +1,11 @@
 <?php
 namespace core;
 
-use core\handlers\HendlerPost;
+use core\handlers\HandlerDelete;
+use core\handlers\HandlerGet;
+use core\handlers\HandlerPatch;
+use core\handlers\HandlerPost;
+use core\handlers\HandlerPut;
 use modules\PageController;
 
 class Application
@@ -23,11 +27,10 @@ class Application
 
         parse_str($rule,$arGetSlug);
         $request = new \core\Request($arGetSlug);
-
         if ($current['rest'])
         {
             $app = new Application();
-            $app->restHandle($arGetSlug,$request);
+            $app->restHandle($arGetSlug,$request,$current);
             exit();
         }
 
@@ -42,16 +45,17 @@ class Application
 
     }
 
-    private function restHandle(mixed $current, Request $request)
+    private function restHandle($current, Request $request,$custom)
     {
         $handler = $current['handler'] ?? null;
+
         switch ($request->getMethod())
         {
-            case "GET": return new HendlerGet();
-            case "POST": return new HendlerPost($handler,$request);
-            case "PUT": return new HendlerPut();
-            case "PATCH": return new HendlerPatch();
-            case "DELETE": return new HendlerDelete();
+            case "GET": return new HandlerGet($handler,$request,$custom);
+            case "POST": return new HandlerPost($handler,$request,$custom);
+            case "PUT": return new HandlerPut($handler,$request,$custom);
+            case "PATCH": return new HandlerPatch($handler,$request,$custom);
+            case "DELETE": return new HandlerDelete($handler,$request,$custom);
             default : return 'not found';
         }
     }
