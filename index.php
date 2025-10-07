@@ -1,75 +1,122 @@
 <?php
-//include "init.php";
-include 'templates/components/table/template.php';
+include "init.php";
+
+define('BASE_URL',$_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']);
+define('TEMPLATE_PATH',BASE_URL.'/templates/blog/');
+
+\core\Application::run();
 
 
-include $_SERVER['DOCUMENT_ROOT'] . '/init.php';
-
-$routes = [
-    [
-        'condition' => '#^/api/([a-z-]+)/?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
-        'rule' => 'handler=$1&id=$2',
-        'rest' => true
-    ],
-    [
-        'condition' => '#^/(category)(?:/([a-z0-9-]+))?(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
-        'rule' => 'section_code=$2&element_code=$3',
-        'type' => 'blog',
-        'components' => [
-            'section' => [
-                'componentClass' => \components\category\CategoryList::class,
-                'template' => 'blog/category/list',
-
-            ],
-            'list' => [
-                'componentClass' => \components\posts\PostsList::class,
-                'template' => 'blog/posts/list',
-            ],
-            'detail' => [
-                'componentClass' => \components\posts\PostsElements::class,
-                'template' => 'blog/posts/detail',
-            ]
-        ]
-    ],
-
-    [   // статичная страница, контент хранится в таблице с pages (field content)
-        'condition' => '#^/(contact)?(?:/(\?.*)?)?$#i',
-        'rule' => 'section_code=$2&element_code=$3',
-        'components' => [
-            'section' => [
-                'componentClass' => \components\posts\PostsElements::class,
-                'template' => 'blog/posts/list',
-            ],
-            'list' => [
-
-            ],
-            'detail' => []
-        ]
-    ],
-
-    [
-        'condition' => '#^/(admin-page)(?:/([a-z0-9-]+))?(?:/(\?.*)?)?$#i',
-        'rule' => 'section_code=$2&element_code=$3',
-        'type' => 'admin',
-        'autorization' => [
-            'role' => ['admin']
-        ],
-        'components' => [
-            'section' => [
-                'componentClass' => \components\pages\PageList::class,
-                'template' => 'admin/pages'
-            ]
-
-        ]
-    ],
-
-
-];
-
-
-
-
-
-
+//echo '<pre>';
+//print_r($_SERVER);
+//
+//$page = $_GET['page'] ?: 'index';
+//$uri = $_SERVER['REQUEST_URI'];
+//$menu = [
+//    [
+//        'title'=>'главная',
+//        'url'=>'page=index',
+//        'condition'=>'#^/#i',
+//
+//    ],
+//    [
+//        'title'=>'список постов пользователя',
+//        'condition'=>'#^$#i',
+//        'rule'=>'page=posts&user_id=$1',
+//
+//    ],
+//
+//    [
+//        'title'=>'детальная поста',
+//        'condition'=>'#^$#i',
+//        'rule'=>'page=post&post_code=$1',
+//
+//    ],
+//
+//    [
+//        'title'=>'авторизация',
+//        'condition'=>'#^$#i',
+//        'rule'=>'page=login&post_code=$1',
+//
+//    ],
+//
+//    [
+//        'title'=>'выход',
+//        'condition'=>'#^$#i',
+//        'rule'=>'page=exit',
+//
+//    ],
+//
+//    [
+//        'title'=>'регистрация',
+//        'condition'=>'#^$#i',
+//        'rule'=>'handle=user&action=registration',
+//
+//    ],
+//
+//
+//];
+//
+//$setting_page = [
+//    'blog'=>[
+//        'components'=>[
+//            'pular.posts'=>[
+//                'collectionList'=>[
+//                    'model'=>'posts@pular'
+//                ]
+//            ],
+//            'rating.bloger'=>[
+//                'collectionList'=>['model'=>'posts@rating']
+//            ]
+//        ]
+//    ]
+//];
+//
+//
+//switch ($page)
+//{
+//    case 'index':
+//    {
+//        $title = 'главная';
+//        break;
+//    }
+//
+//    case 'posts':
+//    {
+//        $title = 'посты пользователя '.$_GET['category'];;
+//        break;
+//    }
+//    case 'post':
+//    {
+//        $title = 'пост детальная id | post_code = '.$_GET['category'];;
+//        break;
+//    }
+//
+//    case 'login':
+//    {
+//        $title = 'авторизация';
+//        break;
+//    }
+//
+//    case 'exit':
+//    {
+//        $title = 'выход';
+//        break;
+//    }
+//
+//    case 'registration':
+//    {
+//        if ($_SERVER['REQUEST_METHOD'] != 'POST')
+//            die();
+//
+//        $title = 'регистрация';
+//        break;
+//    }
+//
+//    default:{
+//        echo '404';
+//    }
+//}
+//include  $_SERVER['DOCUMENT_ROOT'].'/templates/blog/template.php';
 
 

@@ -105,21 +105,28 @@ class SimpleOrm
 
         foreach ($this->mapping as $property => $config) {
             $column = $config['column'];
+
+
             if (array_key_exists($column, $data)) {
-                $value = $data[$column];
+                $value[] = $data[$column];
+
                 $this->setPropertyValue($entity, $property, $value);
             }
         }
-
-        if ($entity)
-            $this->toArrayEntity[] = $entity;
+        $this->toArrayEntity[] = $data;
         return $entity;
     }
 
     public function toArray()
     {
-        if ($this->toArrayEntity)
-            return  json_decode(json_encode($this->toArrayEntity,true),true);
+        if (count($this->toArrayEntity) == 1)
+        {
+            return $this->toArrayEntity[0];
+
+        }else{
+
+            return $this->toArrayEntity;
+        }
     }
 
 

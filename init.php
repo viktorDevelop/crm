@@ -9,10 +9,4 @@ spl_autoload_register(function ($class){
 
 });
 
-
-class Application
-{
-
-}
-
-include $_SERVER['DOCUMENT_ROOT'].'/templates/blog/timeline/template.php';
+//include $_SERVER['DOCUMENT_ROOT'].'/templates/blog/timeline/template.php';

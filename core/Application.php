@@ -1,49 +1,38 @@
 <?php
 namespace core;
 
-use services\categoryViewer\states\SectionList;
+use services\models\Components;
+use services\Page\Pages;
+use services\Page\PageService;
 
 class Application
 {
-    public static $isHiddenPage = false;
-
-    public static function run($router)
+    public static function run()
     {
+        $arRoutes = PageService::getRoutes();
         $uri = $_SERVER['REQUEST_URI'];
-        foreach ($router as $k=> $item)
-        {
-            if (preg_match($item['condition'],$uri))
-            {
-                $rule = preg_replace($item['condition'],$item['rule'],$uri);
-                $current_rules = $item;
+        $request_method = $_SERVER['REQUEST_METHOD'];
 
+
+        foreach ($arRoutes as $k => $route)
+        {
+            if ( preg_match($route['condition'],$uri) )
+            {
+                $current_rule = $route;
+               $urlParse =  preg_replace($route['condition'],$route['rule'],$uri);
             }
         }
+        parse_str($urlParse,$arParams);
+        echo '<pre>';
+        print_r($arParams);
+        print_r($current_rule);
 
-        parse_str($rule,$requestParams);
+        $components = new Components();
+        $components->model->find($current_rule['id']);
+        $res = $components->model->toArray();
 
-        if (!$current_rules){
-            echo 404; die();
-        }
-
-        $request = new \core\Request($requestParams);
-        $controller = $current_rules['controller'] ?? null;
-        self::$isHiddenPage  = $current_rules['auth'] ?? false;
-        if ($controller)
-        {
-            $nameSpaceState = new \ReflectionClass($controller);
-            $sNameSpaceState =  $nameSpaceState->getNamespaceName();
-            $sNameSpaceState .= '\\states';
-
-            $section_code = $requestParams['section_code'] ?? null;
-            $element_code = $requestParams['element_code'] ?? null;
-
-            $state = new CurrentState($section_code,$element_code,$sNameSpaceState,$current_rules['template']);
-            $current_state = $state->getState();
-
-            $oController = new $controller($current_state);
-            echo  $oController->actionShowPage($request);
-        }
-
+        print_r($res);
     }
+
+
 }
