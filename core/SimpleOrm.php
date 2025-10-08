@@ -119,14 +119,11 @@ class SimpleOrm
 
     public function toArray()
     {
-        if (count($this->toArrayEntity) == 1)
-        {
-            return $this->toArrayEntity[0];
+        if (!$this->toArrayEntity)
+            return  [];
 
-        }else{
+        return $this->toArrayEntity;
 
-            return $this->toArrayEntity;
-        }
     }
 
 
@@ -161,15 +158,15 @@ class SimpleOrm
     /**
      * Находит все сущности по критериям
      */
-    public function findAllBy(array $criteria = []): array
+    public function findAllBy(array $criteria = [] ,$condition = 'AND'): array
     {
         $where = [];
         $params = [];
         foreach ($criteria as $field => $value) {
-            $where[] = "{$field} = ?";
+            $where[] = "{$field}   ?";
             $params[] = $value;
         }
-        $whereClause = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+        $whereClause = $where ? 'WHERE ' . implode(" {$condition} ", $where) : '';
         $sql = "SELECT * FROM {$this->table} {$whereClause}";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
@@ -236,9 +233,6 @@ class SimpleOrm
         $primaryValue = null;
         $columns = [];
         $values = [];
-
-
-//        var_dump($columns);
 
         // Определяем первичный ключ и его значение
         foreach ($this->mapping as $property => $config) {

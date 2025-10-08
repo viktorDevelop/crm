@@ -22,7 +22,8 @@ class View
 
     public function render($tmp,$data = [])
     {
-        $this->arDataPage = $data['page'];
+        $this->arDataPage = $data['componentPage'];
+        $this->arDataTemplate = $data['componentTemplate'];
         extract($data);
         ob_start();
         $path = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/template.php';
@@ -38,12 +39,14 @@ class View
         return $content;
     }
 
-    public function includeContent()
+    public function includeContent($page,$data = [])
     {
-        var_dump($this->arDataPage);
-        foreach ($this->arDataPage as $k=>$item)
-        {
-            echo $item;
-        }
+        extract($data);
+        ob_start();
+        $path =  $_SERVER['DOCUMENT_ROOT'].'/templates/blog/pages/'.$page.'.php';
+        include $path;
+        $content = ob_get_contents();
+        ob_clean();
+        echo $content;
     }
 }

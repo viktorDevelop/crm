@@ -9,10 +9,10 @@ class Application
 {
     public static function run()
     {
-        $arRoutes = PageService::getRoutes();
+        $oPageService = new PageService();
+        $arRoutes = $oPageService->getRoutes();
         $uri = $_SERVER['REQUEST_URI'];
         $request_method = $_SERVER['REQUEST_METHOD'];
-
 
         foreach ($arRoutes as $k => $route)
         {
@@ -23,16 +23,9 @@ class Application
             }
         }
         parse_str($urlParse,$arParams);
-        echo '<pre>';
-        print_r($arParams);
-        print_r($current_rule);
-
-        $components = new Components();
-        $components->model->find($current_rule['id']);
-        $res = $components->model->toArray();
-
-        print_r($res);
+        $request = new Request($arParams);
+        $oPageService->getPageSettings($current_rule);
+        $oPageService->execute();
     }
-
 
 }

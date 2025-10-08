@@ -119,4 +119,16 @@ define('TEMPLATE_PATH',BASE_URL.'/templates/blog/');
 //}
 //include  $_SERVER['DOCUMENT_ROOT'].'/templates/blog/template.php';
 
-
+//$comp = new \services\models\Components();
+//
+//$comp->id = 3;
+//$comp->title = 'test111';
+//$comp->template = 'test';
+//$comp->object = 'test';
+//$comp->page_id = 1;
+//$comp->params = 1;
+//
+////var_dump($comp);
+//
+//$orm = new \core\SimpleOrm(\services\models\Components::class);
+//$orm->save($comp);
