@@ -7,7 +7,10 @@ class CollectionList
 {
     public function execute($params)
     {
+
         $params = json_decode($params);
+
+//        var_dump($params);
         $view = View::getInstance();
         if (!$params->template)
             return  false;

@@ -74,7 +74,7 @@
 
 //        echo '<pre>';
 
-        $this->includeContent($page,[]);
+        $this->includeContent($page,'blog',$component_page);
 
         ?>
 

@@ -47,14 +47,15 @@ class View
         return $content;
     }
 
-    public function includeContent($page,$data = [])
+    public function includeContent($page,$tmp = '',$data = '')
     {
-        extract($data);
+
         ob_start();
-        $path =  $_SERVER['DOCUMENT_ROOT'].'/templates/blog/pages/'.$page.'.php';
+        $path =  $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/pages/'.$page.'.php';
         include $path;
         $content = ob_get_contents();
         ob_clean();
+        echo $data;
         echo $content;
     }
 

@@ -16,4 +16,11 @@ class PostsService
         $mPost->model->findAllBy(['likes >= '=>5]);
         return $mPost->model->toArray();
     }
+
+    public static function getPostsIndex()
+    {
+        $mPost = new Posts();
+        $mPost->model->findAll();
+        return $mPost->model->toArray();
+    }
 }

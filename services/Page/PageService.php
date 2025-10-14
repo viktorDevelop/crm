@@ -10,11 +10,12 @@ use services\Posts\PostsService;
 class PageService
 {
     protected array $pageSettings = [];
+    protected ?string $page = '404';
 
     public function execute()
     {
-        echo '<pre>';
-        print_r($this->pageSettings);
+//        echo '<pre>';
+//        print_r($this->pageSettings);
         if ($this->pageSettings['isRest'])
         {
 
@@ -30,13 +31,25 @@ class PageService
                 }
             }
 
-//            echo '<pre>'; print_r($this->pageSettings);
-            $view->setComponetsTemplate($arComponent);
-            echo $view->render('blog',[
-                'page'=>'index',
+            foreach ($this->pageSettings['components_page'] as $k => $val){
+                if (!empty($val['name'])) {
+                    $arComponentPageData = (new $val['object'])->execute($val['params']);
+                }
+            }
 
+//            echo '<pre>'; print_r($arComponentPageData);
+            $view->setComponetsTemplate($arComponent);
+
+            echo $view->render($this->pageSettings['components_page'][0]['template'],[
+                'page'=> $this->page,
+                'component_page'=>$arComponentPageData
             ]);
         }
+    }
+
+    public static function getPageList()
+    {
+        return [];
     }
 
 
@@ -56,8 +69,9 @@ class PageService
         $this->pageSettings['components_page'] = $components_page;
     }
 
-    public function getPageSettings(?array $current_rule)
+    public function getPageSettings(?array $current_rule,$page = null)
     {
+        $this->page = $page;
         $this->getComponentsPage($current_rule);
         $this->getTemplatesComponents();
         $this->pageSettings['isAuth'] = $current_rule['isAuth'];

@@ -22,12 +22,11 @@ class Application
                $urlParse =  preg_replace($route['condition'],$route['rule'],$uri);
             }
         }
-//        echo '<pre>';
-//        print_r($current_rule);
+
         parse_str($urlParse,$arParams);
 
         $request = new Request($arParams);
-        $oPageService->getPageSettings($current_rule);
+        $oPageService->getPageSettings($current_rule,$arParams['page']?? null);
         $oPageService->execute();
     }
 

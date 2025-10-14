@@ -132,3 +132,12 @@ define('TEMPLATE_PATH',BASE_URL.'/templates/blog/');
 //
 //$orm = new \core\SimpleOrm(\services\models\Components::class);
 //$orm->save($comp);
+
+//$parm = new stdClass();
+//
+//$parm->template = 'admin/components/page.list';
+//$parm->model = \services\Page\PageService::class;
+//$parm->action = 'getPageList';
+//$parm->title = 'страницы';
+//
+//echo json_encode($parm);
