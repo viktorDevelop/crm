@@ -2,7 +2,7 @@
 
 <?if($arData):?>
 <section>
-    <h3>Popular posts</h3>
+    <h3>  <?=$title?> </h3>
     <?foreach ($arData as $k=>$item):?>
     <div class="mini-posts">
         <!-- Mini Post -->

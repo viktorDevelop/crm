@@ -22,34 +22,23 @@ class PageService
 
         if (!$this->pageSettings['isRest'])
         {
-            //pulic route
-
             $view = View::getInstance();
-
-            $arComponents_template = [];
-
+            $arComponent = [];
             foreach ($this->pageSettings['component_template'] as $k => $val){
-
+                if (!empty($val['name'])) {
+                    $arComponent[$val['name']] = (new $val['object'])->execute($val['params']);
+                }
             }
 
-
+//            echo '<pre>'; print_r($this->pageSettings);
+            $view->setComponetsTemplate($arComponent);
             echo $view->render('blog',[
                 'page'=>'index',
-                'components'=>[
-                    'popular.posts'=>$this->popularPost()
-                ]
+
             ]);
         }
     }
 
-    public function popularPost()
-    {
-        $view = View::getInstance();
-
-        return $view->render('blog/components/popular.posts',[
-            'arData'=>PostsService::getPublicPost()
-        ]);
-    }
 
 
     public  function getRoutes()
@@ -59,7 +48,7 @@ class PageService
         return $mPage->model->toArray();
     }
 
-    public  function getComponentsPage(array $current_rule):void
+    public  function getComponentsPage(?array $current_rule):void
     {
         $components = new Components();
         $components->model->findAllBy(['page_id='=>$current_rule['id'] ]);
@@ -67,7 +56,7 @@ class PageService
         $this->pageSettings['components_page'] = $components_page;
     }
 
-    public function getPageSettings(array $current_rule)
+    public function getPageSettings(?array $current_rule)
     {
         $this->getComponentsPage($current_rule);
         $this->getTemplatesComponents();

@@ -4,7 +4,7 @@ namespace core;
 class View
 {
     private static $instance;
-    protected $arDataPage;
+    protected $arComponentTemplate = [];
     private function __construct()
     {
     }
@@ -19,11 +19,19 @@ class View
 
         return self::$instance;
     }
+    public function setComponetsPage($arComponent = [])
+    {
+        $this->arComponentTemplate = $arComponent;
+    }
+
+    public function setComponetsTemplate($arComponent = [])
+    {
+        $this->arComponentTemplate = $arComponent;
+    }
 
     public function render($tmp,$data = [])
     {
-        $this->arDataPage = $data['componentPage'];
-        $this->arDataTemplate = $data['componentTemplate'];
+
         extract($data);
         ob_start();
         $path = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/template.php';
@@ -48,5 +56,12 @@ class View
         $content = ob_get_contents();
         ob_clean();
         echo $content;
+    }
+
+    public function includeComponentTemplate($name)
+    {
+
+        if (isset($this->arComponentTemplate[$name]))
+            echo $this->arComponentTemplate[$name];
     }
 }

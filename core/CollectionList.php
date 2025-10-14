@@ -5,11 +5,25 @@ use services\Posts\PostsService;
 
 class CollectionList
 {
-    public function execute(array $params = [])
+    public function execute($params)
     {
+        $params = json_decode($params);
         $view = View::getInstance();
-        return $view->render('blog/components/popular.posts',[
-            'arData'=>PostsService::getPublicPost()
+        if (!$params->template)
+            return  false;
+
+        if (!$params->model)
+            return false;
+
+        if (!$params->action)
+            return false;
+
+        $obj = new $params->model();
+
+        return $view->render($params->template,[
+            'title'=>$params->title,
+            'arData'=> $obj::{$params->action}()
         ]);
+
     }
 }
