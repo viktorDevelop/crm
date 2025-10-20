@@ -16,6 +16,6 @@
 //    var_dump($page);
     ?>
 
-<? $this->includeContent($page,'admin',$component_page);?>
+<? $this->showPage();?>
 </body>
 </html>

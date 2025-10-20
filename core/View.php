@@ -4,12 +4,20 @@ namespace core;
 class View
 {
     private static $instance;
-    protected $arComponentTemplate = [];
+    protected $pageComponent = [];
+
+
+    private $data = [];
     private function __construct()
     {
     }
 
-    public static function getInstance():View
+    public function __set(string $name, $value): void
+    {
+        $this->pageComponent[$name] = $value;
+    }
+
+    public static function getInstance()
     {
         if (!isset(self::$instance))
         {
@@ -19,22 +27,12 @@ class View
 
         return self::$instance;
     }
-    public function setComponetsPage($arComponent = [])
-    {
-        $this->arComponentTemplate = $arComponent;
-    }
-
-    public function setComponetsTemplate($arComponent = [])
-    {
-        $this->arComponentTemplate = $arComponent;
-    }
 
     public function render($tmp,$data = [])
     {
-
         extract($data);
         ob_start();
-        $path = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/template.php';
+       $path = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/template.php';
         if (file_exists($path))
         {
             include $path;
@@ -47,22 +45,13 @@ class View
         return $content;
     }
 
-    public function includeContent($page,$tmp = '',$data = '')
+    public function showComponent($name)
     {
-
-        ob_start();
-        $path =  $_SERVER['DOCUMENT_ROOT'].'/templates/'.$tmp.'/pages/'.$page.'.php';
-        include $path;
-        $content = ob_get_contents();
-        ob_clean();
-        echo $data;
-        echo $content;
+        echo($this->pageComponent[$name]);
     }
 
-    public function includeComponentTemplate($name)
+    public function showPage()
     {
-
-        if (isset($this->arComponentTemplate[$name]))
-            echo $this->arComponentTemplate[$name];
+        echo $this->pageComponent['page_view'];
     }
 }

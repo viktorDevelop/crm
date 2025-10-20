@@ -72,9 +72,7 @@
          * @var $this  \core\View
          */
 
-//        echo '<pre>';
-
-        $this->includeContent($page,'blog',$component_page);
+        $this->showPage();
 
         ?>
 
@@ -94,13 +92,13 @@
         </section>
 
         <?
-            $this->includeComponentTemplate('popular.posts');
+            $this->showComponent('popular.posts');
         ?>
 
         <!-- Posts List -->
         <section>
 
-            <? $this->includeComponentTemplate('raiting.posts');?>
+            <? $this->showComponent('raiting.posts');?>
 
         </section>
 

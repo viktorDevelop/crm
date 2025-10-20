@@ -2,6 +2,7 @@
 namespace services\Page;
 
 use core\CollectionList;
+use core\Template;
 use core\View;
 use services\models\Components;
 use services\models\Pages;
@@ -14,8 +15,7 @@ class PageService
 
     public function execute()
     {
-//        echo '<pre>';
-//        print_r($this->pageSettings);
+//        echo '<pre>'; print_r($this->pageSettings);
         if ($this->pageSettings['isRest'])
         {
 
@@ -23,27 +23,24 @@ class PageService
 
         if (!$this->pageSettings['isRest'])
         {
-            $view = View::getInstance();
-            $arComponent = [];
-            foreach ($this->pageSettings['component_template'] as $k => $val){
+
+            $tmp = new Template('blog');
+            foreach ($this->pageSettings['component_template'] as $k => $val)
+            {
                 if (!empty($val['name'])) {
-                    $arComponent[$val['name']] = (new $val['object'])->execute($val['params']);
+                    $tmp->setComponent($val['name'],(new $val['object'])->execute($val['params']));
                 }
             }
 
-            foreach ($this->pageSettings['components_page'] as $k => $val){
-                if (!empty($val['name'])) {
-                    $arComponentPageData = (new $val['object'])->execute($val['params']);
-                }
+            $content = $this->pageSettings['components_page'][0]['object'] ?? null;
+            if ($content){
+
+                $oContent = new $content();
+                $params = $this->pageSettings['components_page'][0]['params'];
+                $tmp->setPage(($oContent)->execute($params));
             }
 
-//            echo '<pre>'; print_r($arComponentPageData);
-            $view->setComponetsTemplate($arComponent);
-
-            echo $view->render($this->pageSettings['components_page'][0]['template'],[
-                'page'=> $this->page,
-                'component_page'=>$arComponentPageData
-            ]);
+            $tmp->show();
         }
     }
 
@@ -79,13 +76,13 @@ class PageService
         return $this->pageSettings;
     }
 
-    private  function getTemplatesComponents()
+    public  function getTemplatesComponents()
     {
         $components = new Components();
         $components->model->findAllBy(['page_id='=>0]);
         $components_page = $components->model->toArray();
         $this->pageSettings['component_template'] = $components_page;
-
+        return $components_page;
     }
 
 

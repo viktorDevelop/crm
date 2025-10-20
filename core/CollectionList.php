@@ -10,8 +10,9 @@ class CollectionList
 
         $params = json_decode($params);
 
-//        var_dump($params);
+
         $view = View::getInstance();
+
         if (!$params->template)
             return  false;
 
@@ -22,6 +23,7 @@ class CollectionList
             return false;
 
         $obj = new $params->model();
+
 
         return $view->render($params->template,[
             'title'=>$params->title,
