@@ -13,6 +13,7 @@ class Comments
     public int $post_id;
     public string $comment_text;
 
+
     public function __construct()
     {
         $this->model = new SimpleOrm(self::class);

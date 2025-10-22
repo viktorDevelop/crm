@@ -5,15 +5,20 @@ use core\ApiController as ApiControllerAlias;
 use core\Request;
 use core\Responce;
 use core\SimpleOrm;
+use mysql_xdevapi\Exception;
 
 class CommentsController extends ApiControllerAlias
 {
+
     protected function find()
     {
-
+        $id_post = $this->request->getParams('postId');
+        $comments = new Comments();
+        $comments->model->findAllBy(['post_id='=>$id_post]);
+        $arRes = $comments->model->toArray();
         Responce::send([
           'status'=>true,
-          'data'=>[]
+          'data'=>$arRes
        ],200,true);
     }
 
@@ -32,6 +37,7 @@ class CommentsController extends ApiControllerAlias
             'message'=>'create comments',
             'data'=>[]
         ],201,true);
+
     }
 
     protected function update()
