@@ -1,6 +1,8 @@
 <?php
 namespace services\Posts;
 
+use core\Request;
+
 class PostsService
 {
     public static function getPublicPost():array
@@ -21,6 +23,18 @@ class PostsService
     {
         $mPost = new Posts();
         $mPost->model->findAll();
+        return $mPost->model->toArray();
+    }
+
+    public static function getPostsList($page = null)
+    {
+
+    }
+
+    public static function getPost( Request $request)
+    {
+        $mPost = new Posts();
+        $mPost->model->findBy(['code'=>$request->getParams('post_code')]);
         return $mPost->model->toArray();
     }
 }

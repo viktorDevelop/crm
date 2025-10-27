@@ -57,37 +57,17 @@ $arData = $arData[0] ?? null;
 
     <!-- Comments -->
     <div class="post" id="comments">
-
-
-        <comments-form></comments-form>
-        <article class="comment">
-            <div class="comment-autor">
-                <a href="#"><img src="images/avatar.jpg"></a>
-                <a href="#">User</a>
-            </div>
-            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat.</p>
-        </article>
-        <article class="comment">
-            <div class="comment-autor">
-                <a href="#"><img src="images/avatar.jpg"></a>
-                <a href="#">User</a>
-            </div>
-            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat.</p>
-        </article>
-        <article class="comment">
-            <div class="comment-autor">
-                <a href="#"><img src="images/avatar.jpg"></a>
-                <a href="#">User</a>
-            </div>
-            <p>Mauris neque quam, fermentum ut nisl vitae, convallis maximus nisl. Sed mattis nunc id lorem euismod placerat.</p>
-        </article>
+        <comments-form @add-comment="addComment"></comments-form>
+        <comments-list :comments="comments"></comments-list>
     </div>
-
-    <script  type="module" src="/templates/blog/components/js/comments/app-comments.js" data-settings="<?=json_encode([
+    <?$params = htmlspecialchars(json_encode([
         'controller'=>'comments',
         'postId'=>$arData['id'],
 
-    ])?>">
+    ]),ENT_QUOTES,'UTF-8');?>
+
+    <script id="app-comments"  type="module" src="/templates/blog/components/js/comments/app-comments.js"
+            data-settings="<?=$params?>">
     </script>
     <?endif;?>
 </div>

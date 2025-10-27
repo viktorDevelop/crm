@@ -288,13 +288,32 @@ class SimpleOrm
         }
 
         $setClause = implode(', ', $setParts);
-        echo  $sql = "UPDATE {$this->table} SET {$setClause} WHERE {$primaryKey} = ?";
+        $sql = "UPDATE {$this->table} SET {$setClause} WHERE {$primaryKey} = ?";
 
         // Добавляем первичный ключ в конец значений для WHERE
         $values[] = $primaryValue;
 
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute($values);
+        $stmt->execute($values);
         return false;
+    }
+
+    public function delete($id)
+    {
+        $primaryKey = null;
+        foreach ($this->mapping as $config) {
+            if ($config['primary']) {
+                $primaryKey = $config['column'];
+                break;
+            }
+        }
+        if (!$primaryKey) {
+            throw new \RuntimeException('Primary key not defined');
+        }
+        $sql = "DELETE FROM  {$this->table}  WHERE {$primaryKey} = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return  true;
+
     }
 }
