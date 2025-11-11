@@ -51,7 +51,7 @@ class CommentsController extends ApiControllerAlias
 
         Responce::send([
             'status'=>true,
-            'message'=>'create comments',
+            'message'=>'update comments',
             'data'=>[]
         ],201,true);
     }

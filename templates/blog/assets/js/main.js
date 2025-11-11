@@ -22,7 +22,7 @@
 			$sidebar = $('#sidebar'),
 			$main = $('#main');
 
-		// Disable animations/transitions until the page has loaded.
+		// Disable animations/transitions until the page.list has loaded.
 			$body.addClass('is-loading');
 
 			$window.on('load', function() {

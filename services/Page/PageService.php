@@ -21,7 +21,8 @@ class PageService
         if (!$this->pageSettings['isRest'])
         {
 
-            $tmp = new Template('blog');
+          $template =   $this->pageSettings['template_page'] ?? 'blog';
+            $tmp = new Template($template);
             foreach ($this->pageSettings['component_template'] as $k => $val)
             {
                 if (!empty($val['name'])) {
@@ -53,7 +54,7 @@ class PageService
 
     public static function getPageList()
     {
-        return [];
+       return [];
     }
 
 
@@ -78,8 +79,9 @@ class PageService
         $this->page = $page;
         $this->getComponentsPage($current_rule);
         $this->getTemplatesComponents();
-        $this->pageSettings['isAuth'] = $current_rule['isAuth'];
-        $this->pageSettings['isRest'] = $current_rule['rest'];
+        $this->pageSettings['isAuth'] = $current_rule['isAuth'] ?? null;
+        $this->pageSettings['isRest'] = $current_rule['rest'] ?? null;
+        $this->pageSettings['template_page'] = $current_rule['template'] ?? null;
         return $this->pageSettings;
     }
 

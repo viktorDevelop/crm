@@ -23,7 +23,6 @@ const app = createApp({
         const  getComments = async () =>
         {
             const config = getSettings()
-
             const res = await fetch('/api/comments/'+config.postId)
             const response = await res.json();
             if (response.status)
@@ -39,9 +38,6 @@ const app = createApp({
                 body:JSON.stringify(com)
             })
             const response = await res.json();
-
-            console.log(response)
-
         };
         const addComment = (commentText) => {
             const config = getSettings();
@@ -58,8 +54,7 @@ const app = createApp({
                 comment_text:commentText,
                 user_id:1
             });
-            // console.log(comments.value);
-            // console.log(com);
+
         };
         onMounted(() => {
             settings.value = getSettings()

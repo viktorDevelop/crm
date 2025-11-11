@@ -16,7 +16,7 @@
 			-ms-overflow-style: scrollbar;
 		}
 
-	// Ensures page width is always >=320px.
+	// Ensures page.list width is always >=320px.
 		@include breakpoint(xsmall) {
 			html, body {
 				min-width: 320px;
@@ -26,7 +26,7 @@
 	body {
 		background: _palette(bg-alt);
 
-		// Prevents animation/transition "flicker" on page load.
+		// Prevents animation/transition "flicker" on page.list load.
 		// Automatically added/removed by js/main.js.
 			&.is-loading {
 				*, *:before, *:after {
