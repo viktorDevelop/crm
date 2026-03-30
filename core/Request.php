@@ -15,7 +15,7 @@ class Request
             if (key_exists($key,$this->params))
                 return $this->params[$key];
         }
-        return  $this->params;
+        return  $this->params[$key] ?? null;
     }
 
     public function get($name = '')

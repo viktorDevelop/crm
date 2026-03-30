@@ -30,7 +30,7 @@ class View
             }
         }
         ob_start();
-        $file = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$view.'/template.php';
+       $file = $_SERVER['DOCUMENT_ROOT'].'/templates/'.$view.'/template.php';
         if (file_exists($file))
         {
             include $file;

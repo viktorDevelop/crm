@@ -1,7 +1,7 @@
 <?php
 namespace components\Catalog;
 
-class CategoryComponent
+class CategoryComponent1
 {
     protected $section_code = null;
     protected $element_code = null;

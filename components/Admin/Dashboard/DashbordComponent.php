@@ -26,7 +26,7 @@ class DashbordComponent
 
         if ($this->object) {
             $obj_name = ucfirst($this->object);
-            $obj = "\\components\\Admin\\Dashbord\\{$obj_name}\\" . $obj_name . 'Dashbord';
+            $obj = "\\components\\Admin\\Dashboard\\{$obj_name}\\" . $obj_name . 'Dashboard';
 
             if (class_exists($obj))
             {

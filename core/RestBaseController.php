@@ -1,6 +1,8 @@
 <?php
 namespace core;
 
+
+
 class RestBaseController
 {
     /**
@@ -11,57 +13,55 @@ class RestBaseController
     protected Request $request;
 
 
-    public function __construct($params = [])
+    public function __construct($handle ='', $params = [])
     {
-//        send2Log($params);
-        $this->request = new Request();
-        
-        $this->handle = $params['object'] ?? null;
+
+        $this->request = new Request($params);
+        $this->handle = $handle ?? null;
 
     }
 
     public function execute()
     {
-        $this->getController();
-    }
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (!$this->handle)
+            return false;
 
-    public function getController()
-    {
-        $objName = $this->handle;
-        $objName = ucfirst($objName);
-        if ($this->handle)
-        {
-            $this->handle = ucfirst($this->handle).'RestController';
-            $this->handle = "\\components\\Admin\\Dashbord\\{$objName}\\".$this->handle;
-            if (class_exists($this->handle))
-            {
-                $this->handle = new $this->handle;
+        $oCtrl = new $this->handle();
+        $action = $this->request->getParams('action') ?? null;
 
-                switch ($_SERVER['REQUEST_METHOD'])
+        switch ($method){
+            case "GET":
+                return $oCtrl->show();
+            case "POST":
+                if ($action)
                 {
-                    case "GET":
-                        $this->handle->show();
-                    break;
-
-                    case "POST":
-                        $this->handle->create();
-                        break;
-
-                    case "PATCH":
-                        $this->handle->update();
-                        break;
-                    case "DELETE":
-                        $this->handle->delete();
-                        break;
+                    $action = 'action'.ucfirst($action);
+                    return $oCtrl->$action();
                 }
-            }
+                return $oCtrl->create();
 
+            case "PATCH":return $oCtrl->update();
+            case "DELETE":return $oCtrl->delete();
+            default:return "";
         }
     }
 
+    private function findClassByName($className)
+    {
+        $declaredClasses = get_declared_classes();
+
+        foreach ($declaredClasses as $class) {
+            if (stripos($class, $className) !== false) {
+                echo "Найден класс: " . $class . "\n";
+            }
+        }
+    }
+
+
+
     public function __call(string $handle, array $arguments)
     {
-
 
     }
 

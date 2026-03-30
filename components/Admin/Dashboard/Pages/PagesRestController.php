@@ -1,5 +1,5 @@
 <?php
-namespace components\Admin\Dashbord\Pages;
+namespace components\Admin\Dashboard\Pages;
 
 use core\Response;
 use core\RestBaseController;

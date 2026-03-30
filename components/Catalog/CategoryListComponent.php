@@ -1,7 +1,7 @@
 <?php
 namespace components\Catalog;
 
-class CategoryListComponent extends CategoryComponent
+class CategoryListComponent
 {
     public function view()
     {

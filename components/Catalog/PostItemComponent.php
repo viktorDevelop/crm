@@ -1,7 +1,7 @@
 <?php
 namespace components\Catalog;
 
-class PostItemComponent extends CategoryComponent
+class PostItemComponent
 {
     public function view()
     {

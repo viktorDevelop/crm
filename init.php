@@ -31,6 +31,37 @@ spl_autoload_register(function ($class){
 
 
 
+function findClassByName($className, $directory) {
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($directory)
+    );
+
+    $found = [];
+
+    foreach ($iterator as $file) {
+        if ($file->getExtension() === 'php') {
+            $content = file_get_contents($file->getPathname());
+
+            // Простой поиск по паттерну
+            if (preg_match('/class\s+' . preg_quote($className) . '\s/', $content)) {
+                $found[] = $file->getPathname();
+            }
+
+            // Более точный поиск с пространством имен
+            if (preg_match('/namespace\s+([^;]+);.*class\s+' . preg_quote($className) . '/s', $content, $matches)) {
+//                $found[] = $file->getPathname() . " (namespace: {$matches[1]})";
+                $found['namespace'] = $matches[1];
+            }
+        }
+    }
+
+    return $found;
+}
+
+// Использование
+//$results = findClassByName('PagesRestController', __DIR__ . '/components');
+//send2Log($results);
+
 function send2Log($arr,$print = true)
 {
     echo '<pre>';

@@ -2,7 +2,7 @@
 
 namespace components\Catalog;
 
-class PostListComponent extends CategoryComponent
+class PostListComponent
 {
     public function view()
     {
