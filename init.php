@@ -9,6 +9,15 @@ spl_autoload_register(function ($class){
 
 });
 
+
+function send2Log($arr)
+{
+    echo '<pre>';
+    print_r($arr);
+    echo '</pre>';
+}
+
+
 //ini_set('display_errors', 1);
 //error_reporting(E_ALL);
 //
