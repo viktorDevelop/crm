@@ -2,6 +2,7 @@
 namespace core;
 
 use modules\catalog\CatalogModule;
+use modules\category\CategoryModule;
 
 class Application
 {
@@ -9,9 +10,12 @@ class Application
     {
         $router = new Router();
         $action = $router->getAction();
-        $catalog_mod = new CatalogModule();
+        $module = $router->getModule();
+        if (!$module) return 404;
+        $module = "modules\\".strtolower($module)."\\".$module.'Module';
+        $moduleHandle = new $module($router->getRequest(),$router->getModel(),$router->getTemplate());
+        $moduleHandle->{$action}();
         if (!$action) return 404;
-        $catalog_mod->{$action}($router->getRequest(),$router->getModel(),$router->getTemplate());
     }
 }
 

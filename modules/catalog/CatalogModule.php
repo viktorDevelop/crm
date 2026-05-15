@@ -4,8 +4,9 @@ namespace modules\catalog;
 use core\DatabaseOrm;
 use core\Request;
 use core\Template;
+use modules\AModule;
 
-class CatalogModule implements ICatalog
+class CatalogModule extends AModule implements ICatalog
 {
     /**
      * @param Request $request
@@ -13,17 +14,25 @@ class CatalogModule implements ICatalog
      * @param $template
      * @return void
      */
-    public function showList(Request $request,$model,$templateName):void
-    {
 
-        $state = new ListState($request,$model,$templateName);
-        $state->render();
+
+    public function showList():void
+    {
+        $this->listState->render();
     }
 
-    public function showDetail(Request $request,$model,$templateName):void
+    public function showDetail():void
     {
-        $state = new DetailState($request,$model,$templateName);
-        $state->render();
+        $this->detailState->render();
     }
 
+    protected function setCurrentStateListClass(): string
+    {
+       return ListState::class;
+    }
+
+    protected function setCurrentStateDetailClass(): string
+    {
+        return DetailState::class;
+    }
 }

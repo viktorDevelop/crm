@@ -13,6 +13,10 @@ class Router
      */
     private mixed $arParamsPage;
     private enumRouterCatalog $infoState;
+    /**
+     * @var mixed|null
+     */
+    private mixed $controller;
 
     public function __construct()
     {
@@ -38,9 +42,9 @@ class Router
                 $rule = preg_replace($route['condition_rest'],$route['rule'],$uri);
             }
         }
+         parse_str($rule,$requestParams);
 
-
-        parse_str($rule,$requestParams);
+        $this->controller = $current_rule['controller'] ?? null;
         $this->request = new Request($requestParams);
         $paramsPage = new DatabaseOrm(Params::class);
         $arParamsPage =  $paramsPage->findAll(['page_id'=>$current_rule['id']])->toArray();
@@ -72,6 +76,11 @@ class Router
 
     }
 
+    public function getModule():?string
+    {
+        return  $this->controller;
+    }
+
     public function getTemplate():?string
     {
         return $this->infoState->getTemplate($this->prepareParamsConfig());
@@ -93,19 +102,21 @@ class Router
     {
         $orm = new \core\DatabaseOrm(\models\Pages::class);
         $res = $orm->findAll()->toArray();
-        $url_rule_params = "(?:/([a-z0-9-]+)?)?(?:/(\?.*)?)?/?";
+        $url_rule_params = "(?:/([a-z0-9-]+)?)";
         $routes = [];
+
         foreach ($res as $k => $item)
         {
             if ($item['rule'])
             {
                 parse_str($item['rule'],$u);
                 $slug = implode('?', array_fill(0, count($u), $url_rule_params));
-                $routes[$k]['condition'] = "#^/{$item['name']}/?{$slug}/?$#i";
+                $routes[$k]['condition'] = "#^/{$item['name']}/?{$slug}/?(?:/(\?.*)?)?/?$#i";
+                $routes[$k]['controller'] =  $item['controller'] ?? null;
                 if ($item['is_rest'])
                 {
                     $routes[$k]['condition_rest'] = "#^/api/{$item['name']}/?{$slug}/?(?:/(.*)+)?/?$#i";
-                    $routes[$k]['handle'] =  $item['controller'] ?? null;
+                    $routes[$k]['controller'] =  $item['controller'] ?? null;
                 }
                 $routes[$k]['rule'] = $item['rule'] ?? null;
                 $routes[$k]['id'] = $item['id'] ?? null;

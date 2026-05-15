@@ -1,12 +1,16 @@
 <?php
 namespace modules\category;
 
-use core\interefaces\IRest;
+use core\DatabaseOrm;
+use core\interfaces\IRest;
 use core\Request;
+use models\Category;
+use modules\AModule;
 use modules\catalog\AStatesCatalog;
 use modules\catalog\ICatalog;
 
-class CategoryModules extends AStatesCatalog implements IRest,ICatalog
+
+class CategoryModule extends AModule implements IRest,ICatalog
 {
 
     public function actionShow()
@@ -29,18 +33,23 @@ class CategoryModules extends AStatesCatalog implements IRest,ICatalog
         // TODO: Implement actionDelete() method.
     }
 
-    protected function getData(): array
+    public function showList(): void
     {
-        return  [];
+        $this->listState->render();
     }
 
-    public function showList(Request $request, string $model, string $templateName): void
+    public function showDetail(): void
     {
-        // TODO: Implement showList() method.
+        $this->detailState->render();
     }
 
-    public function showDetail(Request $request, string $model, string $templateName): void
+    protected function setCurrentStateListClass(): string
     {
-        // TODO: Implement showDetail() method.
+         return  ListState::class;
+    }
+
+    protected function setCurrentStateDetailClass(): string
+    {
+        return  DetailState::class;
     }
 }

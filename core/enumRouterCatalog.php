@@ -20,6 +20,12 @@ enum enumRouterCatalog: string
         return $routesConfig[$this->value]['action'] ?? null;
     }
 
+    public function getModule(array $routesConfig):?string
+    {
+
+        return $routesConfig[$this->value]['controller'] ?? null;
+    }
+
     public function getTemplate(array $routesConfig):?string
     {
         return $routesConfig[$this->value]['template'] ?? null;

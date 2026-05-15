@@ -1,5 +1,5 @@
 <?php
-namespace core\interefaces;
+namespace core\interfaces;
 
 interface IRest
 {

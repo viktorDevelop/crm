@@ -9,12 +9,14 @@ class Request
         $this->params = $params;
     }
 
-    public function getParams($key = '')
+    public function getParams($key = '',$default = '')
     {
         if ($this->params){
             if (key_exists($key,$this->params))
                 return $this->params[$key];
         }
+        if ($default) return $default;
+
         return  $this->params;
     }
 

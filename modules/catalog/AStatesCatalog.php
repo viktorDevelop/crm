@@ -12,6 +12,8 @@ abstract class AStatesCatalog
     protected $templateName;
     protected Request $request;
 
+    protected  $title = '';
+
     public function __construct(Request $request, $model, $templateName)
     {
         $this->template = new Template('blog');
@@ -21,12 +23,12 @@ abstract class AStatesCatalog
         $this->request = $request;
     }
 
-    abstract protected function getData():array;
+    abstract protected function getData():array | bool;
 
      public function  render()
      {
-         $this->template->setProperty('title','tttt');
          $this->template->setContentView($this->templateName,['arResult'=>$this->getData()]);
+         $this->template->setProperty('title',$this->title);
          $this->template->show();
      }
 }
