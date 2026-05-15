@@ -10,6 +10,7 @@ class Application
         $router = new Router();
         $action = $router->getAction();
         $catalog_mod = new CatalogModule();
+        if (!$action) return 404;
         $catalog_mod->{$action}($router->getRequest(),$router->getModel(),$router->getTemplate());
     }
 }
