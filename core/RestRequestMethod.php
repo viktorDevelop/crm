@@ -1,6 +1,8 @@
 <?php
 namespace core;
 
+use core\interfaces\IRest;
+
 enum RestRequestMethod
 {
     case GET;

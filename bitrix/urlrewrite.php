@@ -8,16 +8,12 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
  */
 \core\Application::run();
 
-//class PageModule implements \modules\catalog\ICatalog
-//{
+
+
+//$status = \core\RestStatusResponse::setStatus('200');
+//$a =  $status->getMessage(['test'], 'ttttt');
 //
-//    public function showList(\core\Request $request, string $model, string $templateName): void
-//    {
-//        // TODO: Implement showList() method.
-//    }
+//send2Log($a);
 //
-//    public function showDetail(\core\Request $request, string $model, string $templateName): void
-//    {
-//        // TODO: Implement showDetail() method.
-//    }
-//}
+//$res = \core\RestRequestMethod::fromString("GET");
+//$res->execute(new \modules\pages\PagesModule(new \core\Request(),\models\Pages::class,'test'));

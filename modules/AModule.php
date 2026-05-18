@@ -8,6 +8,8 @@ abstract class AModule
     protected Request $request;
     protected string $model;
     protected string $templateName;
+    protected  $listState;
+    protected  $detailState;
 
 
     public function __construct(Request $request, string $model, string $templateName)
@@ -22,6 +24,6 @@ abstract class AModule
         $this->detailState = new $currentStateDetail($request,$model,$templateName);
     }
 
-    abstract protected function setCurrentStateListClass():string;
-    abstract protected function setCurrentStateDetailClass():string;
+    abstract protected function setCurrentStateListClass():?string;
+    abstract protected function setCurrentStateDetailClass():?string;
 }

@@ -4,6 +4,7 @@ namespace modules\category;
 use core\DatabaseOrm;
 use core\interfaces\IRest;
 use core\Request;
+use core\Template;
 use models\Category;
 use modules\AModule;
 use modules\catalog\AStatesCatalog;

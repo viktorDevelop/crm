@@ -6,10 +6,13 @@ enum enumRouterCatalog: string
     case CATEGORY = 'category_code';
     case DEFAULT = 'default';
     case POST = 'post_code';
+    case ELEMENT = 'element_id';
 
     public static function resolveRouterKey(array $inputData):self
     {
+
         if (!empty($inputData[self::POST->value])) return  self::POST;
+        if (!empty($inputData[self::ELEMENT->value])) return  self::ELEMENT;
         if (!empty($inputData[self::CATEGORY->value])) return  self::CATEGORY;
         return self::DEFAULT;
     }

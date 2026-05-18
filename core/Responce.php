@@ -4,7 +4,7 @@ namespace core;
 class Responce
 {
 
-    public function send(int $status,$data = [],$message = '')
+    public static function send(int $status,$data = [],$message = '')
     {
 
         $RestStatusResponse = RestStatusResponse::setStatus($status);

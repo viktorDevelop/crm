@@ -1,8 +1,6 @@
 <?php
 namespace core;
 
-use modules\catalog\CatalogModule;
-use modules\category\CategoryModule;
 
 class Application
 {
@@ -11,13 +9,23 @@ class Application
         $router = new Router();
         $action = $router->getAction();
         $module = $router->getModule();
+        $model = $router->getModel();
         if (!$module) return 404;
-        $module = "modules\\".strtolower($module)."\\".$module.'Module';
-        $moduleHandle = new $module($router->getRequest(),$router->getModel(),$router->getTemplate());
-        $moduleHandle->{$action}();
-        if (!$action) return 404;
+            $module = "modules\\".strtolower($module)."\\".$module.'Module';
+        $moduleHandle = new $module($router->getRequest(),$model,$router->getTemplate());
+
+        if($router->is_rest())
+        {
+            $RestRequestMethod = RestRequestMethod::fromString($_SERVER['REQUEST_METHOD']??null);
+            $RestRequestMethod->execute($moduleHandle);
+        }else{
+            if (!$action) return 404;
+            $moduleHandle->{$action}();
+        }
+
     }
 }
+
 
 
 

@@ -17,11 +17,17 @@ class Router
      * @var mixed|null
      */
     private mixed $controller;
+    private bool $is_rest = false;
 
     public function __construct()
     {
         $this->createRoutesList();
         $this->parseUrl();
+    }
+
+    public function is_rest():bool
+    {
+        return $this->is_rest;
     }
 
     final protected function parseUrl()
@@ -40,9 +46,11 @@ class Router
             {
                 $current_rule = $route;
                 $rule = preg_replace($route['condition_rest'],$route['rule'],$uri);
+                $this->is_rest = true;
             }
         }
          parse_str($rule,$requestParams);
+
 
         $this->controller = $current_rule['controller'] ?? null;
         $this->request = new Request($requestParams);
@@ -60,12 +68,14 @@ class Router
         {
             $newAr[$value['name']] = $value;
         }
+
         return $newAr;
     }
 
     protected function setStateInfo()
     {
         $enmRouterCatalog = enumRouterCatalog::resolveRouterKey($this->request->getParams());
+
         $this->infoState =   $enmRouterCatalog;
 
     }
@@ -90,7 +100,6 @@ class Router
     public function getModel():?string
     {
         return $this->infoState->getModel($this->prepareParamsConfig());
-
     }
 
     final public function getRequest():Request
