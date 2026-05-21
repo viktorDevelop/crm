@@ -20,10 +20,10 @@ class Request
         return  $this->params;
     }
 
-    public function get($name = '')
+    public function get($name = '',$defult = '')
     {
         if ($name)
-            return $_GET[$name];
+            return $_GET[$name] ?? $defult;
         return $_GET;
     }
 

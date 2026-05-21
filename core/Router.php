@@ -33,7 +33,6 @@ class Router
     final protected function parseUrl()
     {
         $uri = $_SERVER['REQUEST_URI'];
-
         foreach ($this->routes as $k => $route)
         {
             if(preg_match($route['condition'],$uri))
@@ -48,10 +47,11 @@ class Router
                 $rule = preg_replace($route['condition_rest'],$route['rule'],$uri);
                 $this->is_rest = true;
             }
+
+
         }
+
          parse_str($rule,$requestParams);
-
-
         $this->controller = $current_rule['controller'] ?? null;
         $this->request = new Request($requestParams);
         $paramsPage = new DatabaseOrm(Params::class);
@@ -124,7 +124,7 @@ class Router
                 $routes[$k]['controller'] =  $item['controller'] ?? null;
                 if ($item['is_rest'])
                 {
-                    $routes[$k]['condition_rest'] = "#^/api/{$item['name']}/?{$slug}/?(?:/(.*)+)?/?$#i";
+                    $routes[$k]['condition_rest'] = "#^/api/{$item['name']}/?{$slug}?(?:/(\?.*)?)?/?$#i";
                     $routes[$k]['controller'] =  $item['controller'] ?? null;
                 }
                 $routes[$k]['rule'] = $item['rule'] ?? null;

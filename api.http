@@ -1,0 +1,4 @@
+@base_url = http://localhost
+
+###
+GET {{base_url}}/api/admin/pages/?limit=1&page=1

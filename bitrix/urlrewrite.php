@@ -6,6 +6,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/init.php';
  * сделать показ статической страницы /about
  * rest controller
  */
+
 \core\Application::run();
 
 
